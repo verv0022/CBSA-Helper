@@ -27,8 +27,8 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
     agent.add(travelTimeExemptions(request.body.queryResult.parameters.time));
   }
 
-  function getSMSIntent(agent){
-    agent.add(twiloSMS());
+  async function getSMSIntent(agent){
+    await agent.add(twiloSMS());
   }
 
   // Run the proper function handler based on the matched Dialogflow intent name
@@ -76,26 +76,6 @@ const getAlexaResponse = (type, name, slots) => {
     "sessionAttributes": {}
   }
 
-  // var AlexaDefaultAnswer = {
-  //   "body": {
-  //     "version": "1.0",
-  //     "response": {
-  //       "outputSpeech": {
-  //         "type": "SSML",
-  //         "ssml": "<speak>Welcome to to CBSA APP2, you can ask me questions or say help!</speak>"
-  //       },
-  //       "card": {
-  //         "type": "Simple",
-  //         "title": "LaunchRequest",
-  //         "content": "Welcome to to CBSA APP2, you can ask me questions or say help!"
-  //       },
-  //       "shouldEndSession": false,
-  //       "type": "_DEFAULT_RESPONSE"
-  //     },
-  //     "sessionAttributes": {},
-  //     "userAgent": "ask-node/2.3.0 Node/v8.10.0"
-  //   }
-  // }
 
   if(type === '"LaunchRequest"' || type === '<LaunchRequest>') {
       return AlexaDefaultAnswer;
