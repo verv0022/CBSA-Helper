@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 const functions = require('firebase-functions');
 
 // // Create and Deploy Your First Cloud Functions
@@ -26,10 +27,15 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
     agent.add(travelTimeExemptions(request.body.queryResult.parameters.time));
   }
 
+  function getSMSIntent(agent){
+    agent.add(twiloSMS());
+  }
+
   // Run the proper function handler based on the matched Dialogflow intent name
   let intentMap = new Map();
   intentMap.set('GetCurrentTimeIntent', getCurrentTimeAnswer);
   intentMap.set('GetExemptionsIntent', getExemptionsAnswer);
+  intentMap.set('SendSMSIntent', getSMSIntent);
   agent.handleRequest(intentMap);
 });
 
@@ -40,6 +46,7 @@ exports.alexaSkill = functions.https.onRequest((request, response) => {
   const type = JSON.stringify(request.body.request.type);
   const name = JSON.stringify(request.body.request.intent.name);
   const slots = request.body.request.intent.slots;
+  console.log("Test - type: " + type);
 
   const result = getAlexaResponse(type, name, slots);
 
@@ -52,24 +59,45 @@ const getAlexaResponse = (type, name, slots) => {
     "response": {
       "defaultResponse":{
         "type": "_DEFAULT_RESPONSE",
-        "content": "Hey! Welcome, this is the default response."
+        "content": "Welcome to CBSA Helper, how can I help you?"
       },
       "outputSpeech": {
         "type": "SSML",
-        "ssml": "<speak>Hey! Welcome to the Alexa Skills Kit, you can say hello!</speak>"
+        "ssml": "<speak>Welcome to CBSA Helper, how can I help you?</speak>"
       },
       "shouldEndSession": false,
       "card": {
         "type": "Simple",
         "title": "LaunchRequest",
-        "content": "Hey! Welcome to the Alexa Skills Kit, you can say hello!"
+        "content": "Welcome to CBSA Helper, how can I help you?"
       }
     },
     "userAgent": "ask-node/2.3.0 Node/v8.10.0",
     "sessionAttributes": {}
   }
 
-  if(type === '"LaunchRequest"') {
+  // var AlexaDefaultAnswer = {
+  //   "body": {
+  //     "version": "1.0",
+  //     "response": {
+  //       "outputSpeech": {
+  //         "type": "SSML",
+  //         "ssml": "<speak>Welcome to to CBSA APP2, you can ask me questions or say help!</speak>"
+  //       },
+  //       "card": {
+  //         "type": "Simple",
+  //         "title": "LaunchRequest",
+  //         "content": "Welcome to to CBSA APP2, you can ask me questions or say help!"
+  //       },
+  //       "shouldEndSession": false,
+  //       "type": "_DEFAULT_RESPONSE"
+  //     },
+  //     "sessionAttributes": {},
+  //     "userAgent": "ask-node/2.3.0 Node/v8.10.0"
+  //   }
+  // }
+
+  if(type === '"LaunchRequest"' || type === '<LaunchRequest>') {
       return AlexaDefaultAnswer;
   } else if(type === '"IntentRequest"' && name ==='"GetCurrentTimeIntent"'){
       AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + currentTime() + "</speak>";
@@ -83,7 +111,11 @@ const getAlexaResponse = (type, name, slots) => {
       AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>How long will you be travelling?</speak>";
     }
     return AlexaDefaultAnswer;
-} else {
+  } else if(type === '"IntentRequest"' && name === '"SendSMSIntent"'){
+    //twiloSMS();
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> I have sent you an" + twiloSMS() + "</speak>";
+    AlexaDefaultAnswer.response.card.content = twiloSMS();
+  }else {
     return AlexaDefaultAnswer;
   }
 
@@ -111,4 +143,36 @@ function travelTimeExemptions(travel_time){
   }
 
   return speechText;
+}
+
+
+
+
+/**********************************************************************************/
+/***********************************TWILIO****************************************/
+/************************************************+++++++++++++++++++++++++++++++++*/
+
+async function twiloSMS(){
+  console.log("twilio function")
+  const accountSid = "ACad1b7c3ba37835ba7fbcfb08b565ffd8";
+  const authToken = "c8774a60a7b67cdf3208ee1cc98dd31e";
+  const client = require("twilio")(accountSid, authToken);
+  
+
+  var mob = "+18195761628";
+  //exports.dialogflowFirebaseFulfillement
+  
+  
+  await client.messages
+    .create({
+      to: mob,
+      from: "+15087182932",
+      body: "Hi Rishi. Marcos testing twilio here."
+    })
+    .then(message => console.log(message.sid))
+    .then(console.log('twilio run'))
+    .catch(err => console.error(err));
+  //message.apply();
+
+    return 'text message';
 }
