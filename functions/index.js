@@ -31,10 +31,15 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
     await agent.add(twiloSMS());
   }
 
+  function getAlcoholIntent(agent){
+    agent.add(alcoholIntent(request.body.queryResult.parameters.AlcoholType, request.body.queryResult.parameters.time));
+  }
+
   // Run the proper function handler based on the matched Dialogflow intent name
   let intentMap = new Map();
-  intentMap.set('GetCurrentTimeIntent', getCurrentTimeAnswer);
-  intentMap.set('GetExemptionsIntent', getExemptionsAnswer);
+  intentMap.set('CurrentTimeIntent', getCurrentTimeAnswer);
+  intentMap.set('ExemptionsIntent', getExemptionsAnswer);
+  intentMap.set('AlcoholIntent', getAlcoholIntent);
   intentMap.set('SendSMSIntent', getSMSIntent);
   agent.handleRequest(intentMap);
 });
@@ -44,8 +49,13 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
 /************************************************+++++++++++++++++++++++++++++++++*/
 exports.alexaSkill = functions.https.onRequest((request, response) => {
   const type = JSON.stringify(request.body.request.type);
-  const name = JSON.stringify(request.body.request.intent.name);
-  const slots = request.body.request.intent.slots;
+  var name = '';
+  var slots = '';
+  if(request.body.request.intent !== null){
+    name = JSON.stringify(request.body.request.intent.name);
+    slots = request.body.request.intent.slots;
+  }  
+
   console.log("Test - type: " + type);
 
   const result = getAlexaResponse(type, name, slots);
@@ -78,24 +88,49 @@ const getAlexaResponse = (type, name, slots) => {
 
 
   if(type === '"LaunchRequest"' || type === '<LaunchRequest>') {
+  //if(type === '"LaunchRequest"') {
+    console.log("LaunchRequest LOG: " + type);
       return AlexaDefaultAnswer;
   } else if(type === '"IntentRequest"' && name ==='"GetCurrentTimeIntent"'){
       AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + currentTime() + "</speak>";
       AlexaDefaultAnswer.response.card.content = currentTime();
       return AlexaDefaultAnswer;
   } else if(type === '"IntentRequest"' && name ==='"ExemptionsIntent"'){
-    if(slots.time.name === 'time'){
+    if(slots.time.value === '"?"'){
+      AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> I don't know if I understand. Could you repeat your question?</speak>";
+      AlexaDefaultAnswer.response.card.content = "I don't know if I understand. Could you repeat your question?";  
+    }else{
       AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + travelTimeExemptions(Number(slots.time.value)) + "</speak>";
       AlexaDefaultAnswer.response.card.content = travelTimeExemptions(Number(slots.time.value));
-    }else{
-      AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>How long will you be travelling?</speak>";
-    }
+    } 
     return AlexaDefaultAnswer;
   } else if(type === '"IntentRequest"' && name === '"SendSMSIntent"'){
     //twiloSMS();
-    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> I have sent you an" + twiloSMS() + "</speak>";
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> I have sent you an SMS message." + twiloSMS() + "</speak>";
     AlexaDefaultAnswer.response.card.content = twiloSMS();
-  }else {
+    return AlexaDefaultAnswer;
+  }else if(type === '"IntentRequest"' && name === '"AlcoholIntent"'){
+      AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + alcoholIntent(slots.AlcoholType.value , Number(slots.time.value)) + "</speak>";
+      AlexaDefaultAnswer.response.card.content = alcoholIntent(slots.AlcoholType.value , Number(slots.time.value));
+      return AlexaDefaultAnswer;
+  }else if(type === '"IntentRequest"' && name === '"AMAZON.HelpIntent"'){
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> You can ask me about rules and regulations, like prohibited itens or personal exemptions. </speak>";
+    AlexaDefaultAnswer.response.card.content = "You can ask me about rules and regulations, like prohibited itens or personal exemptions."; 
+    return AlexaDefaultAnswer;
+  }else if(type === '"IntentRequest"' && name === '"AMAZON.CancelIntent"'){
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> Cancelled. </speak>";
+    AlexaDefaultAnswer.response.card.content = "Cancelled."; 
+    return AlexaDefaultAnswer;
+  }else if(type === '"IntentRequest"' && name === '"AMAZON.StopIntent"'){
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> Stopped. </speak>";
+    AlexaDefaultAnswer.response.card.content = "Stopped."; 
+    return AlexaDefaultAnswer;
+  }else if(type === '"IntentRequest"' && name === '"AMAZON.NavigateHomeIntent"'){
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> Navigate Home. </speak>";
+    AlexaDefaultAnswer.response.card.content = "Navigate Home."; 
+    return AlexaDefaultAnswer;
+  }
+  else {
     return AlexaDefaultAnswer;
   }
 
@@ -120,6 +155,29 @@ function travelTimeExemptions(travel_time){
       speechText = "You can claim goods worth up to two hundred Canadian dollars. Tobacco products and alcoholic beverages are not included in this exemption. If the value of the goods you are bringing back exceeds two hundred Canadian dollars, you cannot claim this exemption. Instead, duty and taxes are applicable on the entire amount of the imported goods. Goods must be in your possession and reported at time of entry to Canada. A minimum absence of twenty four hours from Canada is required. For example, if you left at seven PM on Friday the fifteenth, you may return no earlier than seven PM on Saturday the sixteenth to claim the exemption.";
   }else if(travel_time >= 3){
       speechText = "You can claim goods worth up to eight hundred Canadian dollars. You may include alcoholic beverages and tobacco products, within the prescribed limits. Refer to sections Tobacco Products and Alcoholic Beverages. Goods must be in your possession and reported at time of entry to Canada. If the value of the goods you are bringing back exceeds eight hundred Canadian dollars., duties and taxes are applicable only on amount of the imported goods that exceeds eight hundred Canadian dollars. A minimum absence of forty-eight hours from Canada is required. For example, if you left at seven PM on Friday the fifteenth, you may return no earlier than  seven PM on Sunday the seventeenth to claim the exemption.";
+  }
+
+  return speechText;
+}
+
+
+function alcoholIntent(alcohol_type, travel_time){
+  var speechText = "";
+
+  if(travel_time >= 2){
+    switch (alcohol_type) {
+      case 'beer':
+        speechText = "You can bring up to eight point five litters of beer, approximately twenty four cans or bottles.";
+        break;
+        case 'wine':
+          speechText = "You can bring up to one point five litters of wine, approximately two bottles.";
+          break;
+      default:
+        speechText = "You can bring up to one point fourteen litters of alcoholic beverages, approximately one large standard bottle of liquor.";
+        break;
+    }
+  }else{
+    speechText = "You must declare all the alcoholic beverages you are bringing and pay duties.";
   }
 
   return speechText;
