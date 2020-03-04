@@ -1,6 +1,9 @@
 /* eslint-disable no-unreachable */
 const functions = require('firebase-functions');
 
+process.env.DEBUG = 'dialogflow:debug';
+process.env.SENDGRID_API_KEY = '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';
+
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
@@ -31,6 +34,10 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
     await agent.add(twiloSMS());
   }
 
+  async function getEmailIntent(agent){
+    await agent.add(sandgridEmail());
+  }
+
   function getAlcoholIntent(agent){
     agent.add(alcoholIntent(request.body.queryResult.parameters.AlcoholType, request.body.queryResult.parameters.time));
   }
@@ -41,6 +48,8 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
   intentMap.set('ExemptionsIntent', getExemptionsAnswer);
   intentMap.set('AlcoholIntent', getAlcoholIntent);
   intentMap.set('SendSMSIntent', getSMSIntent);
+  intentMap.set('EmailIntent', getEmailIntent);
+  
   agent.handleRequest(intentMap);
 });
 
@@ -51,7 +60,8 @@ exports.alexaSkill = functions.https.onRequest((request, response) => {
   const type = JSON.stringify(request.body.request.type);
   var name = '';
   var slots = '';
-  if(request.body.request.intent !== null){
+  if(request.body.request.intent){
+    console.log("getting name and slots");
     name = JSON.stringify(request.body.request.intent.name);
     slots = request.body.request.intent.slots;
   }  
@@ -105,7 +115,6 @@ const getAlexaResponse = (type, name, slots) => {
     } 
     return AlexaDefaultAnswer;
   } else if(type === '"IntentRequest"' && name === '"SendSMSIntent"'){
-    //twiloSMS();
     AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> I have sent you an SMS message." + twiloSMS() + "</speak>";
     AlexaDefaultAnswer.response.card.content = twiloSMS();
     return AlexaDefaultAnswer;
@@ -116,6 +125,8 @@ const getAlexaResponse = (type, name, slots) => {
   }else if(type === '"IntentRequest"' && name === '"AMAZON.HelpIntent"'){
     AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> You can ask me about rules and regulations, like prohibited itens or personal exemptions. </speak>";
     AlexaDefaultAnswer.response.card.content = "You can ask me about rules and regulations, like prohibited itens or personal exemptions."; 
+    return AlexaDefaultAnswer;
+  }else if(type === '"IntentRequest"' && name === '"AMAZON.FallbackIntent"'){
     return AlexaDefaultAnswer;
   }else if(type === '"IntentRequest"' && name === '"AMAZON.CancelIntent"'){
     AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> Cancelled. </speak>";
@@ -167,13 +178,13 @@ function alcoholIntent(alcohol_type, travel_time){
   if(travel_time >= 2){
     switch (alcohol_type) {
       case 'beer':
-        speechText = "You can bring up to eight point five litters of beer, approximately twenty four cans or bottles.";
+        speechText = "You can bring up to eight point five litres of beer, approximately twenty four cans or bottles.";
         break;
         case 'wine':
-          speechText = "You can bring up to one point five litters of wine, approximately two bottles.";
+          speechText = "You can bring up to one point five litres of wine, approximately two bottles.";
           break;
       default:
-        speechText = "You can bring up to one point fourteen litters of alcoholic beverages, approximately one large standard bottle of liquor.";
+        speechText = "You can bring up to one point fourteen litres of alcoholic beverages, approximately one large standard bottle of liquor.";
         break;
     }
   }else{
@@ -188,6 +199,7 @@ function alcoholIntent(alcohol_type, travel_time){
 
 /**********************************************************************************/
 /***********************************TWILIO****************************************/
+/**********************************SENDGRID***************************************/
 /************************************************+++++++++++++++++++++++++++++++++*/
 
 async function twiloSMS(){
@@ -213,4 +225,70 @@ async function twiloSMS(){
   //message.apply();
 
     return 'text message';
+}
+
+async function sandgridEmail(){
+  //   const sgMail = require("@sendgrid/mail");
+    
+  //   await sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+  //   try {
+  //     console.log("email function");
+  //     await sgMail.send({
+  //       to: "rprishi08@gmail.com",
+  //       from: "rprishi08@gmail.com",
+  //       subject: "Sending with Twilio SendGrid is Fun",
+  //       text: "SendGrid Test Successful wohoo!!",
+  //       html: "<strong>SendGrid Test Successful</strong>"
+  //     });
+  //   } catch (err) {
+  //     console.log("Error message: "+ err);
+  //   }
+
+  // return 'email sent'
+
+
+
+
+  //Gmail try: https://stackoverflow.com/questions/19877246/nodemailer-with-gmail-and-nodejs
+  
+  var nodemailer = require('nodemailer');
+  var smtpTransport = require('nodemailer-smtp-transport');
+
+  var transporter = await nodemailer.createTransport(smtpTransport({
+    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587, // 465 use SSL, you can try with TLS, but port is then 587
+    secure: true,
+    auth: {
+      type: 'OAuth2',
+      secure: true,
+      accessToken: 'AIzaSyCTgfucMSI92eZLKiNkrwpP8N4AuZ-VZ1c',
+      user: 'genteque007@gmail.com',
+      pass: 'appliedproject'
+    }
+  }));
+
+  
+
+  var mailOptions = {
+    from: 'genteque007@gmail.com',
+    to: 'zorz0004@algonquinlive.com',
+    subject: 'Sending Email using Node.js[nodemailer]',
+    text: 'That was easy!',
+    html: '<b>Hello world ✔</b>' 
+  };
+
+await transporter.sendMail(mailOptions, function(error, info){
+    console.log('transporter function');
+    if(error){
+      console.log('Error'+ error);
+      return false;
+    } else {
+      console.log('Email sent: ' + info.response);
+      return true;
+    }
+  });
+
+  return 'email sent';
 }
