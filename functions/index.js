@@ -26,8 +26,12 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
     agent.add(currentTime());
   }
 
-  function getExemptionsAnswer(agent){
-    agent.add(travelTimeExemptions(request.body.queryResult.parameters.time));
+  async function getWelcomeMessage(agent){
+    await agent.add(welcomeMessage());
+  }
+
+  async function getExemptionsAnswer(agent){
+    await agent.add(travelTimeExemptions(request.body.queryResult.parameters.time, agent.parameters.dwm));
   }
 
   async function getSMSIntent(agent){
@@ -45,6 +49,7 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
   // Run the proper function handler based on the matched Dialogflow intent name
   let intentMap = new Map();
   intentMap.set('CurrentTimeIntent', getCurrentTimeAnswer);
+  intentMap.set('WelcomeIntent', getWelcomeMessage);
   intentMap.set('ExemptionsIntent', getExemptionsAnswer);
   intentMap.set('AlcoholIntent', getAlcoholIntent);
   intentMap.set('SendSMSIntent', getSMSIntent);
@@ -98,8 +103,6 @@ const getAlexaResponse = (type, name, slots) => {
 
 
   if(type === '"LaunchRequest"' || type === '<LaunchRequest>') {
-  //if(type === '"LaunchRequest"') {
-    console.log("LaunchRequest LOG: " + type);
       return AlexaDefaultAnswer;
   } else if(type === '"IntentRequest"' && name ==='"GetCurrentTimeIntent"'){
       AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + currentTime() + "</speak>";
@@ -110,8 +113,8 @@ const getAlexaResponse = (type, name, slots) => {
       AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> I don't know if I understand. Could you repeat your question?</speak>";
       AlexaDefaultAnswer.response.card.content = "I don't know if I understand. Could you repeat your question?";  
     }else{
-      AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + travelTimeExemptions(Number(slots.time.value)) + "</speak>";
-      AlexaDefaultAnswer.response.card.content = travelTimeExemptions(Number(slots.time.value));
+      AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + travelTimeExemptions(Number(slots.time.value), slots.dwm.value) + "</speak>";
+      AlexaDefaultAnswer.response.card.content = travelTimeExemptions(Number(slots.time.value), slots.dwm.value);
     } 
     return AlexaDefaultAnswer;
   } else if(type === '"IntentRequest"' && name === '"SendSMSIntent"'){
@@ -151,15 +154,35 @@ const getAlexaResponse = (type, name, slots) => {
 /***********************************ANSWERS****************************************/
 /************************************************+++++++++++++++++++++++++++++++++*/
 
+
+function welcomeMessage(){
+  return "Welcome to CBSA Helper, how can I help you?"
+}
+
 function currentTime(){
     const date = new Date();
     //Return time in UTC !!!
     return date.getHours() + ":" + date.getMinutes();
 }
 
-function travelTimeExemptions(travel_time){
+function travelTimeExemptions(travel_time, dwm){
   var speechText = "";
-  
+
+  if(dwm === 'week' || dwm === 'weeks' || dwm ==='month' || dwm ==='months'
+  || dwm ==='year' || dwm ==='years'){
+    travel_time = 7;
+  }
+
+  if(dwm === 'hour' || dwm === 'hours'){
+    if(travel_time <= 24){
+      travel_time = 1;
+    } else if(travel_time > 24 && travel_time <= 48){
+      travel_time = 2;
+    } else if(travel_time > 49){
+      travel_time = 3;
+    }
+  }
+
   if(travel_time <= 1){
     speechText = "Personal exemptions do not apply to same-day cross-border shoppers."; 
   }else if(travel_time > 1 && travel_time < 3){
@@ -251,7 +274,7 @@ async function sandgridEmail(){
 
 
   //Gmail try: https://stackoverflow.com/questions/19877246/nodemailer-with-gmail-and-nodejs
-  
+
   var nodemailer = require('nodemailer');
   var smtpTransport = require('nodemailer-smtp-transport');
 
@@ -278,17 +301,18 @@ async function sandgridEmail(){
     text: 'That was easy!',
     html: '<b>Hello world ✔</b>' 
   };
+const mailTransport = (error, info) =>{
+  console.log('transporter function');
+  if(error){
+    console.log('Error'+ error);
+    return false;
+  } else {
+    console.log('Email sent: ' + info.response);
+    return true;
+  }
+}
 
-await transporter.sendMail(mailOptions, function(error, info){
-    console.log('transporter function');
-    if(error){
-      console.log('Error'+ error);
-      return false;
-    } else {
-      console.log('Email sent: ' + info.response);
-      return true;
-    }
-  });
+  transporter.sendMail(mailOptions, mailTransport);
 
   return 'email sent';
 }
