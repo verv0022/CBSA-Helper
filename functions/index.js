@@ -35,7 +35,7 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
   }
 
   async function getSMSIntent(agent){
-    await agent.add(twiloSMS());
+    await agent.add(twilioSMS());
   }
 
   async function getEmailIntent(agent){
@@ -118,8 +118,8 @@ const getAlexaResponse = (type, name, slots) => {
     } 
     return AlexaDefaultAnswer;
   } else if(type === '"IntentRequest"' && name === '"SendSMSIntent"'){
-    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> I have sent you an SMS message." + twiloSMS() + "</speak>";
-    AlexaDefaultAnswer.response.card.content = twiloSMS();
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> I have sent you an SMS message." + twilioSMS() + "</speak>";
+    AlexaDefaultAnswer.response.card.content = twilioSMS();
     return AlexaDefaultAnswer;
   }else if(type === '"IntentRequest"' && name === '"SendEmailIntent"'){
     AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> I have sent you an email." + sandgridEmail() + "</speak>";
@@ -130,8 +130,8 @@ const getAlexaResponse = (type, name, slots) => {
       AlexaDefaultAnswer.response.card.content = alcoholIntent(slots.AlcoholType.value , Number(slots.time.value));
       return AlexaDefaultAnswer;
   }else if(type === '"IntentRequest"' && name === '"AMAZON.HelpIntent"'){
-    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> You can ask me about rules and regulations, like prohibited itens or personal exemptions. </speak>";
-    AlexaDefaultAnswer.response.card.content = "You can ask me about rules and regulations, like prohibited itens or personal exemptions."; 
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> You can ask me about rules and regulations, like prohibited items or personal exemptions. </speak>";
+    AlexaDefaultAnswer.response.card.content = "You can ask me about rules and regulations, like prohibited items or personal exemptions."; 
     return AlexaDefaultAnswer;
   }else if(type === '"IntentRequest"' && name === '"AMAZON.FallbackIntent"'){
     return AlexaDefaultAnswer;
@@ -229,7 +229,7 @@ function alcoholIntent(alcohol_type, travel_time){
 /**********************************SENDGRID***************************************/
 /************************************************+++++++++++++++++++++++++++++++++*/
 
-async function twiloSMS(){
+async function twilioSMS(){
   console.log("twilio function")
   const accountSid = "ACad1b7c3ba37835ba7fbcfb08b565ffd8";
   const authToken = "c8774a60a7b67cdf3208ee1cc98dd31e";
