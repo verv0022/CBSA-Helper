@@ -121,6 +121,10 @@ const getAlexaResponse = (type, name, slots) => {
     AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> I have sent you an SMS message." + twiloSMS() + "</speak>";
     AlexaDefaultAnswer.response.card.content = twiloSMS();
     return AlexaDefaultAnswer;
+  }else if(type === '"IntentRequest"' && name === '"SendEmailIntent"'){
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> I have sent you an email." + sandgridEmail() + "</speak>";
+    AlexaDefaultAnswer.response.card.content = sandgridEmail();
+    return AlexaDefaultAnswer;
   }else if(type === '"IntentRequest"' && name === '"AlcoholIntent"'){
       AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + alcoholIntent(slots.AlcoholType.value , Number(slots.time.value)) + "</speak>";
       AlexaDefaultAnswer.response.card.content = alcoholIntent(slots.AlcoholType.value , Number(slots.time.value));
@@ -273,7 +277,7 @@ async function sandgridEmail(){
 
 
 
-  //Gmail try: https://stackoverflow.com/questions/19877246/nodemailer-with-gmail-and-nodejs
+  //Gmail test: https://stackoverflow.com/questions/19877246/nodemailer-with-gmail-and-nodejs
 
   var nodemailer = require('nodemailer');
   var smtpTransport = require('nodemailer-smtp-transport');
@@ -288,7 +292,7 @@ async function sandgridEmail(){
       secure: true,
       accessToken: 'AIzaSyCTgfucMSI92eZLKiNkrwpP8N4AuZ-VZ1c',
       user: 'genteque007@gmail.com',
-      pass: 'appliedproject'
+      pass: 'Appliedproject007'
     }
   }));
 
@@ -301,16 +305,17 @@ async function sandgridEmail(){
     text: 'That was easy!',
     html: '<b>Hello world ✔</b>' 
   };
-const mailTransport = (error, info) =>{
-  console.log('transporter function');
-  if(error){
-    console.log('Error'+ error);
-    return false;
-  } else {
-    console.log('Email sent: ' + info.response);
-    return true;
+
+  const mailTransport = (error, info) =>{
+    console.log('transporter function');
+    if(error){
+      console.log('Error'+ error);
+      //return false;
+    } else {
+      console.log('Email sent: ' + info.response);
+      //return true;
+    }
   }
-}
 
   transporter.sendMail(mailOptions, mailTransport);
 
