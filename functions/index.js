@@ -126,8 +126,8 @@ const getAlexaResponse = (type, name, slots) => {
     AlexaDefaultAnswer.response.card.content = sandgridEmail();
     return AlexaDefaultAnswer;
   }else if(type === '"IntentRequest"' && name === '"AlcoholIntent"'){
-      AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + alcoholIntent(slots.AlcoholType.value , Number(slots.time.value)) + "</speak>";
-      AlexaDefaultAnswer.response.card.content = alcoholIntent(slots.AlcoholType.value , Number(slots.time.value));
+      AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + alcoholIntent(slots.AlcoholType.value , Number(slots.time.value), slots.dwm.value) + "</speak>";
+      AlexaDefaultAnswer.response.card.content = alcoholIntent(slots.AlcoholType.value , Number(slots.time.value), slots.dwm.value);
       return AlexaDefaultAnswer;
   }else if(type === '"IntentRequest"' && name === '"AMAZON.HelpIntent"'){
     AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> You can ask me about rules and regulations, like prohibited items or personal exemptions. </speak>";
@@ -169,9 +169,9 @@ function currentTime(){
     return date.getHours() + ":" + date.getMinutes();
 }
 
-function travelTimeExemptions(travel_time, dwm){
-  var speechText = "";
-
+function dwmConverter(dwm){
+  var travel_time = 0;
+  
   if(dwm === 'week' || dwm === 'weeks' || dwm ==='month' || dwm ==='months'
   || dwm ==='year' || dwm ==='years'){
     travel_time = 7;
@@ -187,6 +187,29 @@ function travelTimeExemptions(travel_time, dwm){
     }
   }
 
+  return travel_time;
+}
+
+function travelTimeExemptions(travel_time, dwm){
+  var speechText = "";
+
+  // if(dwm === 'week' || dwm === 'weeks' || dwm ==='month' || dwm ==='months'
+  // || dwm ==='year' || dwm ==='years'){
+  //   travel_time = 7;
+  // }
+
+  // if(dwm === 'hour' || dwm === 'hours'){
+  //   if(travel_time <= 24){
+  //     travel_time = 1;
+  //   } else if(travel_time > 24 && travel_time <= 48){
+  //     travel_time = 2;
+  //   } else if(travel_time > 49){
+  //     travel_time = 3;
+  //   }
+  // }
+
+  travel_time = dwmConverter(dwm);
+
   if(travel_time <= 1){
     speechText = "Personal exemptions do not apply to same-day cross-border shoppers."; 
   }else if(travel_time > 1 && travel_time < 3){
@@ -199,8 +222,10 @@ function travelTimeExemptions(travel_time, dwm){
 }
 
 
-function alcoholIntent(alcohol_type, travel_time){
+function alcoholIntent(alcohol_type, travel_time, dwm){
   var speechText = "";
+
+  travel_time = dwmConverter(dwm);
 
   if(travel_time >= 2){
     switch (alcohol_type) {
