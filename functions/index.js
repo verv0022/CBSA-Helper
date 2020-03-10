@@ -43,7 +43,7 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
   }
 
   function getAlcoholIntent(agent){
-    agent.add(alcoholIntent(request.body.queryResult.parameters.AlcoholType, request.body.queryResult.parameters.time));
+    agent.add(alcoholIntent(request.body.queryResult.parameters.AlcoholType, request.body.queryResult.parameters.time, agent.parameters.dwm));
   }
 
   // Run the proper function handler based on the matched Dialogflow intent name
