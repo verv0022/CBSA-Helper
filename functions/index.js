@@ -1,5 +1,6 @@
 /* eslint-disable no-unreachable */
 const functions = require('firebase-functions');
+//const verifier = require('alexa-verifier');
 
 process.env.DEBUG = 'dialogflow:debug';
 process.env.SENDGRID_API_KEY = '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';
@@ -62,6 +63,28 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
 /********************************Alexa Skill***************************************/
 /************************************************+++++++++++++++++++++++++++++++++*/
 exports.alexaSkill = functions.https.onRequest((request, response) => {
+
+  /*###### npm alexa-validator    -- TEST --  ######*/
+  console.log('Alexa request: '+ JSON.stringify(request.body));
+  console.log('Alexa headers: '+ JSON.stringify(request.headers));
+  //console.log('Alexa rawBody: '+ JSON.stringify(request));
+
+  // var cert_url = request.headers.signaturecertchainurl;
+  // var signature = request.headers.signature;
+  // var requestRawBody = JSON.stringify(request.rawBody);
+  
+  // try {
+  //   verifier(cert_url, signature, requestRawBody, (er)=> {
+  //     console.log("error: "+ er);
+  //   });
+  // } catch (error) {
+  //   console.log("catch error: "+error);
+  //   response.status(404).send('Sorry, cant find that');
+  //   return response;
+  // }
+  /*###### npm alexa-validator    -- TEST --  ######*/
+
+
   const type = JSON.stringify(request.body.request.type);
   var name = '';
   var slots = '';
@@ -193,22 +216,9 @@ function dwmConverter(dwm){
 function travelTimeExemptions(travel_time, dwm){
   var speechText = "";
 
-  // if(dwm === 'week' || dwm === 'weeks' || dwm ==='month' || dwm ==='months'
-  // || dwm ==='year' || dwm ==='years'){
-  //   travel_time = 7;
-  // }
-
-  // if(dwm === 'hour' || dwm === 'hours'){
-  //   if(travel_time <= 24){
-  //     travel_time = 1;
-  //   } else if(travel_time > 24 && travel_time <= 48){
-  //     travel_time = 2;
-  //   } else if(travel_time > 49){
-  //     travel_time = 3;
-  //   }
-  // }
-
-  travel_time = dwmConverter(dwm);
+  if(dwm !== 'day' && dwm !== 'days'){
+    travel_time = dwmConverter(dwm);
+  }
 
   if(travel_time <= 1){
     speechText = "Personal exemptions do not apply to same-day cross-border shoppers."; 
@@ -225,8 +235,11 @@ function travelTimeExemptions(travel_time, dwm){
 function alcoholIntent(alcohol_type, travel_time, dwm){
   var speechText = "";
 
-  travel_time = dwmConverter(dwm);
+  if(dwm !== 'day' && dwm !== 'days'){
+    travel_time = dwmConverter(dwm);
+  }
 
+  console.log("TravelTime: " + travel_time);
   if(travel_time >= 2){
     switch (alcohol_type) {
       case 'beer':
@@ -236,11 +249,11 @@ function alcoholIntent(alcohol_type, travel_time, dwm){
           speechText = "You can bring up to one point five litres of wine, approximately two bottles.";
           break;
       default:
-        speechText = "You can bring up to one point fourteen litres of alcoholic beverages, approximately one large standard bottle of liquor.";
+        speechText = "You can bring up to one point fourteen litres of " + alcohol_type + ", approximately one large standard bottle of liquor.";
         break;
     }
   }else{
-    speechText = "You must declare all the alcoholic beverages you are bringing and pay duties.";
+    speechText = "You must declare all the " + alcohol_type + " you are bringing and may pay duties.";
   }
 
   return speechText;
@@ -302,7 +315,7 @@ async function sandgridEmail(){
 
 
 
-  //Gmail test: https://stackoverflow.com/questions/19877246/nodemailer-with-gmail-and-nodejs
+  //Gmail SMTP: https://stackoverflow.com/questions/19877246/nodemailer-with-gmail-and-nodejs
 
   var nodemailer = require('nodemailer');
   var smtpTransport = require('nodemailer-smtp-transport');
@@ -321,11 +334,11 @@ async function sandgridEmail(){
     }
   }));
 
-  
+  var usr_email = '';  
 
   var mailOptions = {
     from: 'genteque007@gmail.com',
-    to: 'zorz0004@algonquinlive.com',
+    to: usr_email,
     subject: 'Sending Email using Node.js[nodemailer]',
     text: 'That was easy!',
     html: '<b>Hello world ✔</b>' 
