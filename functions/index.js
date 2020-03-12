@@ -2,8 +2,12 @@
 const functions = require('firebase-functions');
 //const verifier = require('alexa-verifier');
 
+
+//Start - Sendgrid requirements
 process.env.DEBUG = 'dialogflow:debug';
 process.env.SENDGRID_API_KEY = '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';
+//End - Sendgrid requirements
+
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -20,9 +24,11 @@ const {WebhookClient} = require('dialogflow-fulfillment');
 
 exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, response) => {
   const agent = new WebhookClient({ request, response });
-  console.log('Dialogflow Request headers: ' + JSON.stringify(request.headers));
-  console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
+  //console.log('Dialogflow Request headers: ' + JSON.stringify(request.headers));
+  //console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
 
+
+  //Functions to add agent for each intent called
   function getCurrentTimeAnswer(agent) {
     agent.add(currentTime());
   }
@@ -32,7 +38,7 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
   }
 
   async function getExemptionsAnswer(agent){
-    await agent.add(travelTimeExemptions(request.body.queryResult.parameters.time, agent.parameters.dwm));
+    await agent.add(travelTimeExemptions(agent.parameters.time, agent.parameters.dwm));
   }
 
   async function getSMSIntent(agent){
@@ -44,7 +50,11 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
   }
 
   function getAlcoholIntent(agent){
-    agent.add(alcoholIntent(request.body.queryResult.parameters.AlcoholType, request.body.queryResult.parameters.time, agent.parameters.dwm));
+    agent.add(alcoholIntent(agent.parameters.AlcoholType, agent.parameters.time, agent.parameters.dwm));
+  }
+
+  function getTobaccoIntent(agent){
+    agent.add(tobaccoIntent(agent.parameters.TobaccoType));
   }
 
   // Run the proper function handler based on the matched Dialogflow intent name
@@ -53,6 +63,7 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
   intentMap.set('WelcomeIntent', getWelcomeMessage);
   intentMap.set('ExemptionsIntent', getExemptionsAnswer);
   intentMap.set('AlcoholIntent', getAlcoholIntent);
+  intentMap.set('TobaccoIntent', getTobaccoIntent);
   intentMap.set('SendSMSIntent', getSMSIntent);
   intentMap.set('EmailIntent', getEmailIntent);
   
@@ -64,7 +75,7 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
 /************************************************+++++++++++++++++++++++++++++++++*/
 exports.alexaSkill = functions.https.onRequest((request, response) => {
 
-  /*###### npm alexa-validator    -- TEST --  ######*/
+  /* START  ###### npm alexa-validator    -- TEST --  ######*/
   console.log('Alexa request: '+ JSON.stringify(request.body));
   console.log('Alexa headers: '+ JSON.stringify(request.headers));
   //console.log('Alexa rawBody: '+ JSON.stringify(request));
@@ -82,9 +93,10 @@ exports.alexaSkill = functions.https.onRequest((request, response) => {
   //   response.status(404).send('Sorry, cant find that');
   //   return response;
   // }
-  /*###### npm alexa-validator    -- TEST --  ######*/
+   /* END  ###### npm alexa-validator    -- TEST --  ######*/
 
 
+  //Collect type - name and slots
   const type = JSON.stringify(request.body.request.type);
   var name = '';
   var slots = '';
@@ -101,6 +113,7 @@ exports.alexaSkill = functions.https.onRequest((request, response) => {
   response.send(result);
 });
 
+//Default answer, change SSML and CARD.CONTENT only
 const getAlexaResponse = (type, name, slots) => {  
   var AlexaDefaultAnswer = {
     "version": "1.0",
@@ -124,7 +137,7 @@ const getAlexaResponse = (type, name, slots) => {
     "sessionAttributes": {}
   }
 
-
+  //Requests
   if(type === '"LaunchRequest"' || type === '<LaunchRequest>') {
       return AlexaDefaultAnswer;
   } else if(type === '"IntentRequest"' && name ==='"GetCurrentTimeIntent"'){
@@ -152,6 +165,10 @@ const getAlexaResponse = (type, name, slots) => {
       AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + alcoholIntent(slots.AlcoholType.value , Number(slots.time.value), slots.dwm.value) + "</speak>";
       AlexaDefaultAnswer.response.card.content = alcoholIntent(slots.AlcoholType.value , Number(slots.time.value), slots.dwm.value);
       return AlexaDefaultAnswer;
+  }else if(type === '"IntentRequest"' && name === '"TobaccoIntent"'){
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + tobaccoIntent(slots.TobaccoType.value) + "</speak>";
+    AlexaDefaultAnswer.response.card.content = tobaccoIntent(slots.TobaccoType.value);
+    return AlexaDefaultAnswer;
   }else if(type === '"IntentRequest"' && name === '"AMAZON.HelpIntent"'){
     AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> You can ask me about rules and regulations, like prohibited items or personal exemptions. </speak>";
     AlexaDefaultAnswer.response.card.content = "You can ask me about rules and regulations, like prohibited items or personal exemptions."; 
@@ -181,17 +198,19 @@ const getAlexaResponse = (type, name, slots) => {
 /***********************************ANSWERS****************************************/
 /************************************************+++++++++++++++++++++++++++++++++*/
 
-
+//Welcome message
 function welcomeMessage(){
   return "Welcome to CBSA Helper, how can I help you?"
 }
 
+//Return current time - test function
 function currentTime(){
     const date = new Date();
     //Return time in UTC !!!
     return date.getHours() + ":" + date.getMinutes();
 }
 
+//Day(s), Week(s), Month(s), Year(s) ans Hour(s) converter
 function dwmConverter(dwm){
   var travel_time = 0;
   
@@ -213,6 +232,7 @@ function dwmConverter(dwm){
   return travel_time;
 }
 
+//General travel exemptions
 function travelTimeExemptions(travel_time, dwm){
   var speechText = "";
 
@@ -220,6 +240,7 @@ function travelTimeExemptions(travel_time, dwm){
     travel_time = dwmConverter(dwm);
   }
 
+  //Exemptions responses
   if(travel_time <= 1){
     speechText = "Personal exemptions do not apply to same-day cross-border shoppers."; 
   }else if(travel_time > 1 && travel_time < 3){
@@ -231,7 +252,7 @@ function travelTimeExemptions(travel_time, dwm){
   return speechText;
 }
 
-
+//Alcohol exemptions
 function alcoholIntent(alcohol_type, travel_time, dwm){
   var speechText = "";
 
@@ -239,15 +260,15 @@ function alcoholIntent(alcohol_type, travel_time, dwm){
     travel_time = dwmConverter(dwm);
   }
 
-  console.log("TravelTime: " + travel_time);
+  //Alcohol responses
   if(travel_time >= 2){
     switch (alcohol_type) {
       case 'beer':
         speechText = "You can bring up to eight point five litres of beer, approximately twenty four cans or bottles.";
         break;
-        case 'wine':
-          speechText = "You can bring up to one point five litres of wine, approximately two bottles.";
-          break;
+      case 'wine':
+        speechText = "You can bring up to one point five litres of wine, approximately two bottles.";
+        break;
       default:
         speechText = "You can bring up to one point fourteen litres of " + alcohol_type + ", approximately one large standard bottle of liquor.";
         break;
@@ -259,12 +280,45 @@ function alcoholIntent(alcohol_type, travel_time, dwm){
   return speechText;
 }
 
+//Tobacco exemptions
+function tobaccoIntent(tobacco_type){
+  var speechText = "";
+
+  //convert plural words to singular
+  if(tobacco_type === 'cigars'){
+    tobacco_type = 'cigar'
+  } else if(tobacco_type === 'cigarretes'){
+    tobacco_type = 'cigarrete';
+  }
+
+  //Tobacco responses
+  switch(tobacco_type){
+    case 'tobacco sticks':
+      speechText = "If you have been away from Canada for forty-eight hours or more,  you can bring up to two hundred tobacco sticks.";
+      break;
+    case 'tobacco':
+      speechText = "If you have been away from Canada for forty-eight hours or more, you can bring up to two hundred grams, seven ounces, of manufactured tobacco.";
+      break;
+    case 'cigar':
+      speechText = "If you have been away from Canada for forty-eight hours or more, you can bring up to fifty cigars.";
+      break;
+    case 'cigarette':
+      speechText = "If you have been away from Canada for forty-eight hours or more, you can bring up to two hundred cigarettes";
+      break;
+    default:
+      speechText = "For more information regarding tobacco products entering Canada, please refer to CBSA website.";
+      break;
+  }
+
+  return speechText;
+}
 
 
 
 /**********************************************************************************/
 /***********************************TWILIO****************************************/
 /**********************************SENDGRID***************************************/
+/*********************************GMAIL SMTP***************************************/
 /************************************************+++++++++++++++++++++++++++++++++*/
 
 async function twilioSMS(){
@@ -273,10 +327,8 @@ async function twilioSMS(){
   const authToken = "c8774a60a7b67cdf3208ee1cc98dd31e";
   const client = require("twilio")(accountSid, authToken);
   
-
+  //Phone number that will receive the message
   var mob = "+18195761628";
-  //exports.dialogflowFirebaseFulfillement
-  
   
   await client.messages
     .create({
@@ -293,6 +345,9 @@ async function twilioSMS(){
 }
 
 async function sandgridEmail(){
+
+  /* START  ###### SANDGRID ######*/
+
   //   const sgMail = require("@sendgrid/mail");
     
   //   await sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -312,9 +367,10 @@ async function sandgridEmail(){
 
   // return 'email sent'
 
+  /* END ###### SANDGRID ######*/
 
 
-
+  /* START ###### GMAIL SMTP ######*/
   //Gmail SMTP: https://stackoverflow.com/questions/19877246/nodemailer-with-gmail-and-nodejs
 
   var nodemailer = require('nodemailer');
@@ -339,8 +395,8 @@ async function sandgridEmail(){
   var mailOptions = {
     from: 'genteque007@gmail.com',
     to: usr_email,
-    subject: 'Sending Email using Node.js[nodemailer]',
-    text: 'That was easy!',
+    subject: 'CBSA Helper',
+    text: 'CBSA Helper - Information',
     html: '<b>Hello world ✔</b>' 
   };
 
@@ -356,6 +412,8 @@ async function sandgridEmail(){
   }
 
   transporter.sendMail(mailOptions, mailTransport);
+
+  /* END ###### GMAIL SMTP ######*/
 
   return 'email sent';
 }
