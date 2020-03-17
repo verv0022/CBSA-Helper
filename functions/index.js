@@ -57,6 +57,30 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
     agent.add(tobaccoIntent(agent.parameters.TobaccoType));
   }
 
+  function getProhibitedItems(agent){
+    agent.add(prohibitedItems());
+  }
+
+  function getFoodPlantsAnimals(agent){
+    agent.add(foodPlantsAnimals());
+  }
+
+  function getFirearmsWeapons(agent){
+    agent.add(firearmsWeapons());
+  }
+
+  function getExplosivesFireworksAmmunition(agent){
+    agent.add(explosivesFireworksAmmunition());
+  }
+
+  function getVehicles(agent){
+    agent.add(vehicles());
+  }
+
+  function getConsumerProducts(agent){
+    agent.add(consumerProducts());
+  }
+
   // Run the proper function handler based on the matched Dialogflow intent name
   let intentMap = new Map();
   intentMap.set('CurrentTimeIntent', getCurrentTimeAnswer);
@@ -64,6 +88,12 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
   intentMap.set('ExemptionsIntent', getExemptionsAnswer);
   intentMap.set('AlcoholIntent', getAlcoholIntent);
   intentMap.set('TobaccoIntent', getTobaccoIntent);
+  intentMap.set('ProhibitedIntent', getProhibitedItems);
+  intentMap.set('FirearmsWeaponsIntent', getFirearmsWeapons);
+  intentMap.set('FoodPlantsAnimalsIntent', getFoodPlantsAnimals);
+  intentMap.set('ExplosivesFireworksAmmunitionIntent', getExplosivesFireworksAmmunition);
+  intentMap.set('VehiclesIntent', getVehicles);
+  intentMap.set('ConsumerProductsIntent', getConsumerProducts);
   intentMap.set('SendSMSIntent', getSMSIntent);
   intentMap.set('EmailIntent', getEmailIntent);
   
@@ -168,6 +198,30 @@ const getAlexaResponse = (type, name, slots) => {
   }else if(type === '"IntentRequest"' && name === '"TobaccoIntent"'){
     AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + tobaccoIntent(slots.TobaccoType.value) + "</speak>";
     AlexaDefaultAnswer.response.card.content = tobaccoIntent(slots.TobaccoType.value);
+    return AlexaDefaultAnswer;
+  }else if(type === '"IntentRequest"' && name === '"ProhibitedIntent"'){
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + prohibitedItems() + "</speak>";
+    AlexaDefaultAnswer.response.card.content = prohibitedItems();
+    return AlexaDefaultAnswer;
+  }else if(type === '"IntentRequest"' && name === '"FirearmsWeaponsIntent"'){
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + firearmsWeapons() + "</speak>";
+    AlexaDefaultAnswer.response.card.content = firearmsWeapons();
+    return AlexaDefaultAnswer;
+  }else if(type === '"IntentRequest"' && name === '"FoodPlantsAnimalsIntent"'){
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + foodPlantsAnimals() + "</speak>";
+    AlexaDefaultAnswer.response.card.content = foodPlantsAnimals();
+    return AlexaDefaultAnswer;
+  }else if(type === '"IntentRequest"' && name === '"ExplosivesFireworksAmmunitionIntent"'){
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + explosivesFireworksAmmunition() + "</speak>";
+    AlexaDefaultAnswer.response.card.content = explosivesFireworksAmmunition();
+    return AlexaDefaultAnswer;
+  }else if(type === '"IntentRequest"' && name === '"VehiclesIntent"'){
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + vehicles() + "</speak>";
+    AlexaDefaultAnswer.response.card.content = vehicles();
+    return AlexaDefaultAnswer;
+  }else if(type === '"IntentRequest"' && name === '"ConsumerProductsIntent"'){
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + consumerProducts() + "</speak>";
+    AlexaDefaultAnswer.response.card.content = consumerProducts();
     return AlexaDefaultAnswer;
   }else if(type === '"IntentRequest"' && name === '"AMAZON.HelpIntent"'){
     AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> You can ask me about rules and regulations, like prohibited items or personal exemptions. </speak>";
@@ -313,6 +367,52 @@ function tobaccoIntent(tobacco_type){
   return speechText;
 }
 
+
+//Prohibited Items
+function prohibitedItems(){
+  var speechText = "";
+
+  speechText = "The prohibited and restricted goods are separeted in the following categories. To retrieve more information please say the name of the desired category: ";
+  speechText += " Firearms and weapons; Food, plants and animals; Explosives, fireworks and ammunition; Vehicles; Consumer products";
+
+  return speechText;
+}
+
+//Firearms
+function firearmsWeapons(){
+  var speechText = "";
+  speechText = "You must declare all weapons and firearms at the CBSA port of entry when you enter Canada. Please refer to CBSA website for more information.";
+  return speechText;
+}
+
+//Food, plants, animals and related products
+function foodPlantsAnimals(){
+  var speechText = "";
+  speechText = "All food, plants, animals, and related products must be declared. Food can carry disease, such as E. coli. Plants and plant products can carry invasive alien species, such as the Asian Long-Horned Beetle. Animals and animal products can carry diseases, such as avian influenza and foot-and-mouth disease. Please refer to CBSA website for more information.";
+  return speechText;
+}
+
+//Explosives, fireworks and ammunition
+function explosivesFireworksAmmunition(){
+  var speechText = "";
+  speechText = "You are required to have written authorization and permits to bring explosives, fireworks and certain types of ammunition into Canada. Please refer to CBSA website for more information.";
+  return speechText;
+}
+
+//Vehicles
+function vehicles(){
+  var speechText = "";
+  speechText = "Vehicles include any kind of pleasure vehicles such as passenger cars, pickup trucks, snowmobiles and motor homes, as long as you use them for non-commercial purposes. There are many requirements that apply to the importation of vehicles. Please refer to CBSA website for more information.";
+  return speechText;
+}
+
+
+//Consumer products
+function consumerProducts(){
+  var speechText = "";
+  speechText = "The importation of certain consumer products that could pose a danger to the public (e.g., baby walkers, jequirity beans that are often found in art or bead work) is prohibited. Canadian residents should be aware of consumer products that have safety requirements in Canada. Many of these safety requirements are stricter than requirements of other countries. Please refer to CBSA website for more information.";
+  return speechText;
+}
 
 
 /**********************************************************************************/
