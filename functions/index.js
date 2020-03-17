@@ -130,8 +130,13 @@ exports.alexaSkill = functions.https.onRequest((request, response) => {
   //   });
   // } catch (error) {
   //   console.log("catch error: "+error);
-  //   response.status(404).send('Sorry, cant find that');
+  //   response.status(400).send('Bad Request');
   //   return response;
+  // }
+
+  // if(signature === null || signature === ''){
+  //   console.log("Request not signed");
+  //   response.status(400).send('Bad Request');
   // }
    /* END  ###### npm alexa-validator    -- TEST --  ######*/
 
@@ -304,6 +309,12 @@ function dwmConverter(dwm){
 function travelTimeExemptions(travel_time, dwm){
   var speechText = "";
 
+  //Validate slots received and return error message
+  if(travel_time === '?' || dwm === '?' || isNaN(travel_time) || isNaN(dwm) ){
+    speechText = "I'm not sure if I understand, please ask me again.";
+    return speechText;
+  }
+
   if(dwm !== 'day' && dwm !== 'days'){
     travel_time = dwmConverter(dwm);
   }
@@ -323,6 +334,12 @@ function travelTimeExemptions(travel_time, dwm){
 //Alcohol exemptions
 function alcoholIntent(alcohol_type, travel_time, dwm){
   var speechText = "";
+
+  //Validate slots received and return error message
+  if(alcohol_type === '?' || dwm === '?' || isNaN(alcohol_type) || isNaN(dwm) ){
+    speechText = "I'm not sure if I understand, please ask me again.";
+    return speechText;
+  }
 
   if(dwm !== 'day' && dwm !== 'days'){
     travel_time = dwmConverter(dwm);
@@ -351,6 +368,12 @@ function alcoholIntent(alcohol_type, travel_time, dwm){
 //Tobacco exemptions
 function tobaccoIntent(tobacco_type){
   var speechText = "";
+
+  //Validate slots received and return error message
+  if(tobacco_type === '?' || isNaN(tobacco_type)){
+    speechText = "I'm not sure if I understand, please ask me again.";
+    return speechText;
+  }
 
   //convert plural words to singular
   if(tobacco_type === 'cigars'){
