@@ -85,6 +85,10 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
     agent.add(gifts());
   }
 
+  function getHelp(agent){
+    agent.add(help());
+  }
+
   // Run the proper function handler based on the matched Dialogflow intent name
   let intentMap = new Map();
   intentMap.set('CurrentTimeIntent', getCurrentTimeAnswer);
@@ -99,6 +103,7 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
   intentMap.set('VehiclesIntent', getVehicles);
   intentMap.set('ConsumerProductsIntent', getConsumerProducts);
   intentMap.set('GiftsIntent', getGifts);
+  intentMap.set('HelpIntent', getHelp);
   intentMap.set('SendSMSIntent', getSMSIntent);
   intentMap.set('EmailIntent', getEmailIntent);
   
@@ -233,21 +238,21 @@ const getAlexaResponse = (type, name, slots) => {
     AlexaDefaultAnswer.response.card.content = gifts();
     return AlexaDefaultAnswer;
   }else if(type === '"IntentRequest"' && name === '"AMAZON.HelpIntent"'){
-    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> You can ask me about rules and regulations, like prohibited items or personal exemptions. </speak>";
-    AlexaDefaultAnswer.response.card.content = "You can ask me about rules and regulations, like prohibited items or personal exemptions."; 
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + help() + "</speak>";
+    AlexaDefaultAnswer.response.card.content = help(); 
     return AlexaDefaultAnswer;
   }else if(type === '"IntentRequest"' && name === '"AMAZON.FallbackIntent"'){
     return AlexaDefaultAnswer;
   }else if(type === '"IntentRequest"' && name === '"AMAZON.CancelIntent"'){
-    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> Cancelled. </speak>";
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>Cancelled.</speak>";
     AlexaDefaultAnswer.response.card.content = "Cancelled."; 
     return AlexaDefaultAnswer;
   }else if(type === '"IntentRequest"' && name === '"AMAZON.StopIntent"'){
-    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> Stopped. </speak>";
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>Stopped.</speak>";
     AlexaDefaultAnswer.response.card.content = "Stopped."; 
     return AlexaDefaultAnswer;
   }else if(type === '"IntentRequest"' && name === '"AMAZON.NavigateHomeIntent"'){
-    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> Navigate Home. </speak>";
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>Navigate Home.</speak>";
     AlexaDefaultAnswer.response.card.content = "Navigate Home."; 
     return AlexaDefaultAnswer;
   }
@@ -411,7 +416,7 @@ function explosivesFireworksAmmunition(){
 //Vehicles
 function vehicles(){
   var speechText = "";
-  speechText = "Vehicles include any kind of pleasure vehicles such as passenger cars, pickup trucks, snowmobiles and motor homes, as long as you use them for non-commercial purposes. There are many requirements that apply to the importation of vehicles. Please refer to CBSA website for more information.";
+  speechText = "You can bring back any kind of pleasure vehicles such as passenger cars, pickup trucks, snowmobiles and motor homes, as long as you use them for non-commercial purposes. There are many requirements that apply to the importation of vehicles. Please refer to CBSA website for more information.";
   return speechText;
 }
 
@@ -431,6 +436,13 @@ function gifts(){
   return speechText;
 }
 
+
+//Help message
+function help(){
+  var speechText = "";
+  speechText = "I can help you with border rules and regulations. You can ask me about prohibited items or personal exemptions, for example."
+  return speechText;
+}
 
 /**********************************************************************************/
 /***********************************TWILIO****************************************/
