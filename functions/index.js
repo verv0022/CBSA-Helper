@@ -81,6 +81,10 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
     agent.add(consumerProducts());
   }
 
+  function getGifts(agent){
+    agent.add(gifts());
+  }
+
   // Run the proper function handler based on the matched Dialogflow intent name
   let intentMap = new Map();
   intentMap.set('CurrentTimeIntent', getCurrentTimeAnswer);
@@ -94,6 +98,7 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
   intentMap.set('ExplosivesFireworksAmmunitionIntent', getExplosivesFireworksAmmunition);
   intentMap.set('VehiclesIntent', getVehicles);
   intentMap.set('ConsumerProductsIntent', getConsumerProducts);
+  intentMap.set('GiftsIntent', getGifts);
   intentMap.set('SendSMSIntent', getSMSIntent);
   intentMap.set('EmailIntent', getEmailIntent);
   
@@ -222,6 +227,10 @@ const getAlexaResponse = (type, name, slots) => {
   }else if(type === '"IntentRequest"' && name === '"ConsumerProductsIntent"'){
     AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + consumerProducts() + "</speak>";
     AlexaDefaultAnswer.response.card.content = consumerProducts();
+    return AlexaDefaultAnswer;
+  }else if(type === '"IntentRequest"' && name === '"GiftsIntent"'){
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + gifts() + "</speak>";
+    AlexaDefaultAnswer.response.card.content = gifts();
     return AlexaDefaultAnswer;
   }else if(type === '"IntentRequest"' && name === '"AMAZON.HelpIntent"'){
     AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> You can ask me about rules and regulations, like prohibited items or personal exemptions. </speak>";
@@ -411,6 +420,14 @@ function vehicles(){
 function consumerProducts(){
   var speechText = "";
   speechText = "The importation of certain consumer products that could pose a danger to the public (e.g., baby walkers, jequirity beans that are often found in art or bead work) is prohibited. Canadian residents should be aware of consumer products that have safety requirements in Canada. Many of these safety requirements are stricter than requirements of other countries. Please refer to CBSA website for more information.";
+  return speechText;
+}
+
+
+//Gifts
+function gifts(){
+  var speechText = "";
+  speechText = "While you are away you can send gifts worth up to sixty canadian dollars free of duty if they are not a tobacco product, an alcoholic beverage or advertising matter. If the gift value is more than sixty canadian dollars, the recipient will pay taxes on the excess amount. Remember to add a greeting card to avoid misunderstandings. While gifts you send from outside Canada do not count as part of your personal exemption, gifts you bring back in your personal baggage do. Remember not to wrap the gifts as a CBSA agent might need to unwrap them for examination when you cross the border.";
   return speechText;
 }
 
