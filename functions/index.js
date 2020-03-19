@@ -114,31 +114,57 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
 /********************************Alexa Skill***************************************/
 /************************************************+++++++++++++++++++++++++++++++++*/
 exports.alexaSkill = functions.https.onRequest((request, response) => {
-
+  
   /* START  ###### npm alexa-validator    -- TEST --  ######*/
   console.log('Alexa request: '+ JSON.stringify(request.body));
   console.log('Alexa headers: '+ JSON.stringify(request.headers));
   //console.log('Alexa rawBody: '+ JSON.stringify(request));
 
-  // var cert_url = request.headers.signaturecertchainurl;
-  // var signature = request.headers.signature;
-  // var requestRawBody = JSON.stringify(request.rawBody);
-  
-  // try {
-  //   verifier(cert_url, signature, requestRawBody, (er)=> {
-  //     console.log("error: "+ er);
-  //   });
-  // } catch (error) {
-  //   console.log("catch error: "+error);
-  //   response.status(400).send('Bad Request');
-  //   return response;
-  // }
+  var cert_url = request.headers.signaturecertchainurl;
+  var signature = request.headers.signature;
+  var requestRawBody = JSON.stringify(request.rawBody);
 
-  // if(signature === null || signature === ''){
+  console.log('cert_url: '+cert_url);
+  console.log('signature: '+signature);
+  console.log('raw body: '+requestRawBody);
+
+  //START - Manual validation
+  // if(cert_url === null || cert_url === '' || signature === null || signature === ''){
   //   console.log("Request not signed");
   //   response.status(400).send('Bad Request');
+  // } else if(!cert_url.indexOf('https://s3.amazonaws.com:443/echo.api') &&
+  //           !cert_url.indexOf('ttps://s3.amazonaws.com/echo.api')){
+  //     console.log("Invalid URL");
+  //     response.status(400).send('Bad Request');
   // }
-   /* END  ###### npm alexa-validator    -- TEST --  ######*/
+  //END - Manual validation
+
+  //START - Amazon validation - https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-nodejs
+  const { SkillRequestSignatureVerifier, TimestampVerifier } = require('ask-sdk-express-adapter');
+  const Alexa = require('ask-sdk-core');
+
+  const skillBuilder = Alexa.SkillBuilders.custom();
+  const skill = skillBuilder.create();
+
+  async function validator(requestStr, response){
+    try {
+      await new SkillRequestSignatureVerifier().verify(requestStr, request.headers);
+      await new TimestampVerifier().verify(requestStr);
+    } catch (err) {
+        // server return err message
+        response.status(400).send('Bad Request');
+        console.log("Validator error: "+err);
+    }
+    //response = skill.invoke(request.body);
+    //response = skill.invoke(JSON.parse(request.body));
+    //response.send(result)
+  }
+  
+  // validator(request);
+  //END - Amazon validation
+
+
+  /* END  ###### npm alexa-validator    -- TEST --  ######*/
 
 
   //Collect type - name and slots
@@ -151,10 +177,17 @@ exports.alexaSkill = functions.https.onRequest((request, response) => {
     slots = request.body.request.intent.slots;
   }  
 
-  console.log("Test - type: " + type);
+  //console.log("Test - type: " + type);
 
   const result = getAlexaResponse(type, name, slots);
 
+  
+  try{
+    validator(JSON.stringify(request.body), response);//call Amazon validator, after consume request
+  }catch(err){
+    console.log("Not validated.");
+  }
+  
   response.send(result);
 });
 
@@ -249,16 +282,19 @@ const getAlexaResponse = (type, name, slots) => {
   }else if(type === '"IntentRequest"' && name === '"AMAZON.FallbackIntent"'){
     return AlexaDefaultAnswer;
   }else if(type === '"IntentRequest"' && name === '"AMAZON.CancelIntent"'){
-    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>Cancelled.</speak>";
-    AlexaDefaultAnswer.response.card.content = "Cancelled."; 
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>It is Cancelled.</speak>";
+    AlexaDefaultAnswer.response.card.content = "It is Cancelled."; 
+    AlexaDefaultAnswer.response.shouldEndSession = true;
     return AlexaDefaultAnswer;
   }else if(type === '"IntentRequest"' && name === '"AMAZON.StopIntent"'){
-    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>Stopped.</speak>";
-    AlexaDefaultAnswer.response.card.content = "Stopped."; 
+    AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>OK I'll stop.</speak>";
+    AlexaDefaultAnswer.response.card.content = "OK I'll stop."; 
+    AlexaDefaultAnswer.response.shouldEndSession = true;
     return AlexaDefaultAnswer;
   }else if(type === '"IntentRequest"' && name === '"AMAZON.NavigateHomeIntent"'){
     AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>Navigate Home.</speak>";
     AlexaDefaultAnswer.response.card.content = "Navigate Home."; 
+    AlexaDefaultAnswer.response.shouldEndSession = true;
     return AlexaDefaultAnswer;
   }
   else {
@@ -310,7 +346,7 @@ function travelTimeExemptions(travel_time, dwm){
   var speechText = "";
 
   //Validate slots received and return error message
-  if(travel_time === '?' || dwm === '?' || isNaN(travel_time) || isNaN(dwm) ){
+  if(travel_time === '?' || dwm === '?' || isNaN(travel_time) || dwm === '' ){
     speechText = "I'm not sure if I understand, please ask me again.";
     return speechText;
   }
@@ -336,7 +372,7 @@ function alcoholIntent(alcohol_type, travel_time, dwm){
   var speechText = "";
 
   //Validate slots received and return error message
-  if(alcohol_type === '?' || dwm === '?' || isNaN(alcohol_type) || isNaN(dwm) ){
+  if(alcohol_type === '?' || dwm === '?' || alcohol_type === '' || dwm === ''){
     speechText = "I'm not sure if I understand, please ask me again.";
     return speechText;
   }
@@ -370,7 +406,7 @@ function tobaccoIntent(tobacco_type){
   var speechText = "";
 
   //Validate slots received and return error message
-  if(tobacco_type === '?' || isNaN(tobacco_type)){
+  if(tobacco_type === '?' || tobacco_type === ''){
     speechText = "I'm not sure if I understand, please ask me again.";
     return speechText;
   }
