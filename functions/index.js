@@ -116,19 +116,19 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
 exports.alexaSkill = functions.https.onRequest((request, response) => {
   
   /* START  ###### npm alexa-validator    -- TEST --  ######*/
-  console.log('Alexa request: '+ JSON.stringify(request.body));
-  console.log('Alexa headers: '+ JSON.stringify(request.headers));
+  //console.log('Alexa request: '+ JSON.stringify(request.body));
+  //console.log('Alexa headers: '+ JSON.stringify(request.headers));
   //console.log('Alexa rawBody: '+ JSON.stringify(request));
 
-  var cert_url = request.headers.signaturecertchainurl;
-  var signature = request.headers.signature;
-  var requestRawBody = JSON.stringify(request.rawBody);
-
-  console.log('cert_url: '+cert_url);
-  console.log('signature: '+signature);
-  console.log('raw body: '+requestRawBody);
-
   //START - Manual validation
+  // var cert_url = request.headers.signaturecertchainurl;
+  // var signature = request.headers.signature;
+  // var requestRawBody = JSON.stringify(request.rawBody);
+
+  // console.log('cert_url: '+cert_url);
+  // console.log('signature: '+signature);
+  // console.log('raw body: '+requestRawBody);
+
   // if(cert_url === null || cert_url === '' || signature === null || signature === ''){
   //   console.log("Request not signed");
   //   response.status(400).send('Bad Request');
@@ -159,8 +159,6 @@ exports.alexaSkill = functions.https.onRequest((request, response) => {
     //response = skill.invoke(JSON.parse(request.body));
     //response.send(result)
   }
-  
-  // validator(request);
   //END - Amazon validation
 
 
