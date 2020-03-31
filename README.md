@@ -1,5 +1,3 @@
-<html>
-
 <!-- PROJECT LOGO -->
 <p align="center">
   <a href="">
@@ -19,4 +17,3 @@
     <a href="https://github.com/shah0150/deployment-document-template/issues">Request Feature</a>
   </p>
 </p>
-</html>
