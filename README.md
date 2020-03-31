@@ -42,7 +42,7 @@ firebase login
 ```
 You will be prompted to your default browser to login using your firebase account, once the login is succeed you can close the browser window that oppened.
 
-##### Emergency Kit
+## Emergency Kit
 If for any reason you need to reinstall the firebase functions, proceed on Terminal as follows:
 ```sh
 npm install firebase-functions@latest firebase-admin@latest --save
