@@ -16,12 +16,39 @@
 </p>
 
 ## Requirements 
-##### Code pulled on local machine
-##### Alexa Developer Account
-##### Dialogflow Account
-##### Firebase Account
+- [x] GitHub code pulled to local machine
+- [x] Alexa Developer Account
+- [x] Dialogflow Account
+- [x] Firebase Account
 
 ## Setup 
-### Initial set up for MySQL:
+### Initial set up
+Clone the GitHub directory to your local machine, using Terminal:
+```sh
+git clone https://github.com/rign0002/GenTeque.git GenTeque
+```
+
+### Install components
+To ensure you have all the standard components that the code need navigate on Terminal to functions folder and execute the install command as demonstraded below:
+```sh
+cd functions
+npm install
+```
+
+### Login to Firebase
+On Terminal proceed the login command to connect your Firebase account:
+```sh
+firebase login
+```
+You will be prompted to your default browser to login using your firebase account, once the login is succeed you can close the browser window that oppened.
+
+##### Emergency Kit
+If for any reason you need to reinstall the firebase functions, proceed on Terminal as follows:
+```sh
+npm install firebase-functions@latest firebase-admin@latest --save
+npm install -g firebase-tools
+firebase login
+firebase init functions
+```
 ## Contact Us
 <a name="Contact"></a>
