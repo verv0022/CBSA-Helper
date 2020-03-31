@@ -48,6 +48,12 @@
 CBSA Helper is a voice application for Alexa and Google Home, to provide fast and easy to understand, information regarding travel exemptions, prohibited items and duties.
 It is focused for travelers returning or entering Canada. The main purpouse is to be a trustable source, faster and easier than looking through a traditional website.
 
+### Built With
+* [Node.js](https://nodejs.org/en/)
+* [Alexa](https://developer.amazon.com/en-US/alexa)
+* [Dialogflow](https://dialogflow.com/)
+* [Firebase](https://firebase.google.com/)
+
 ## Requirements 
 - [x] GitHub code pulled to local machine
 - [x] Alexa Developer Account
