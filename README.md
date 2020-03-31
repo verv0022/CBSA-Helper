@@ -16,8 +16,11 @@
 </p>
 
 ## Requirements 
-##### Hardware: + Mac with Catalina OS + iPhone 6S or newer with iOS 13 installed. 
-##### Software: + MySQL (We are using MAMP) + Node.js v10.15.0 + XCode 11.3.1 
+##### Code pulled on local machine
+##### Alexa Developer Account
+##### Dialogflow Account
+##### Firebase Account
+
 ## Setup 
 ### Initial set up for MySQL:
 ## Contact Us
