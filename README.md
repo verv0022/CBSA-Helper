@@ -42,8 +42,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-![Alexa Skill](images/Alexa_Skill.jpg)[H300]
-![Google Skill](images/Google_Skill.jpg)
+![Skills Screenshot](images/skills_screenshot.png)
 
  
 CBSA Helper is a voice application for Alexa and Google Home, to provide fast and easy to understand, information regarding travel exemptions, prohibited items and duties.
