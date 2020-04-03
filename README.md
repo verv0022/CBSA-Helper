@@ -119,9 +119,16 @@ firebase init functions
 
 <!-- USAGE -->
 ## Usage
+Usage flow example:
+
 
 <!-- ROADMAP -->
 ## Roadmap
+- Add more intents: We have added the intents that currently are refered on CBSA website, as regulations can change, any new intent will need to be added later.
+
+- Publishing on Store: This project is not published on Alexa Store nor Google Store. We worked as far as we could to let the project in the final steps for publishing for the general public.
+
+- Images: The project was focused only on voice, but Amazon and Google have devices with screen, we would suggest to implement some images in the resposes for the users that have this devices, we believe this will make their usage more friendly, instead of the device be only displaying text as currently does.
 
 <!-- CONTACT -->
 ## Contact Us
