@@ -66,7 +66,7 @@ It is focused for travelers returning or entering Canada. The main purpouse is t
 
 <!-- DESIGN -->
 ## Design
-
+**TO BE ADDED**
 <!-- HIGH-LEVEL ARCHITECTURE -->
 ## High-Level Architecture
 Alexa and Dialogflow communicate directly to Firebase Function, which contains the code published and the following interactions with Firebase Database, Twilio and Sandgrid occurr from there. Additionaly, Google has a chat platform, directly enabled from DialogFlow:
