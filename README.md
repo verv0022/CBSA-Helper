@@ -6,10 +6,11 @@
 
   <p align="center">
     </br>
-    <h1 align="center">CBSA HELPER</h1>
-    <a align="center" href="https://bot.dialogflow.com/96a34494-a331-4f68-807a-43f956ea865e" target="_blank">Chatbot Demo</a>
+    <h1>CBSA HELPER</h1>
+    </br>
+    <a href="https://bot.dialogflow.com/96a34494-a331-4f68-807a-43f956ea865e" target="_blank">Chatbot Demo</a>
     ·
-    <a align="center" href="#Contact">Contact Us</a>
+    <a href="#Contact">Contact Us</a>
   </p>
 </p>
 
