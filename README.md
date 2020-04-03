@@ -108,6 +108,12 @@ firebase login
 ```
 You will be prompted to your default browser to login using your firebase account, once the login is succeed you can close the browser window that oppened.
 
+### Deploy to Firebase Function
+Every time a change in the code is made, or a functionality is implemented you will need to deploy the code to Firebase Function, be sure you are logged on the Terminal window with your Firebase account, and execute the following command:
+```sh
+sudo firebase deploy
+```
+
 #### Emergency Kit
 If for any reason you need to reinstall the firebase functions, proceed on Terminal as follows:
 ```sh
