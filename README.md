@@ -3,7 +3,7 @@
   <a href="">
     <img src="images/Genteque_logo_final.png" alt="Team/Project logo" min-width="80" height="80">
   </a>
-  <p align="center>
+  <p align="center">
     </br>          
             <h1>CBSA Helper</h1>
   </p>
