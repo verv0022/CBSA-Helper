@@ -5,7 +5,7 @@
   </a>
   
   </br>          
-  <h1>CBSA Helper</h1>
+  <h1 align="center">CBSA Helper</h1>
   
   <p align="center">
     </br>
