@@ -48,32 +48,42 @@
 CBSA Helper is a voice application for Alexa and Google Home, to provide fast and easy to understand, information regarding travel exemptions, prohibited items and duties.
 It is focused for travelers returning or entering Canada. The main purpouse is to be a trustable source, faster and easier than looking through a traditional website.
 
+<!-- BUILT WITH -->
 ### Built With
 * [Node.js](https://nodejs.org/en/)
 * [Alexa](https://developer.amazon.com/en-US/alexa)
 * [Dialogflow](https://dialogflow.com/)
 * [Firebase](https://firebase.google.com/)
 
-
+<!-- FEATURES -->
 ## Features
 - Voice app to help travelers understand the rules and regulations on entering Canada from international travels as described in the dedicated website: https://www.cbsa-asfc.gc.ca/travel-voyage/ifcrc-rpcrc-eng.html
 - Desirable features: Send e-mail or SMS to user with more details to the user when requested.
 - Platforms: Alexa app, Amazon Echo, Google Home
 
+<!-- DESIGN -->
 ## Design
 
+<!-- HIGH-LEVEL ARCHITECTURE -->
 ## High-Level Architecture
+Alexa and Dialogflow communicate directly to Firebase Function, which contains the code published and the following interactions with Firebase Database, Twilio and Sandgrid occurr from there. Additionaly, Google has a chat platform, directly enabled from DialogFlow:
 ![Genteque High-Level Architecture](images/GenTeque_HighLevelArchitecture.png)
 
+<!-- TECHNICAL RESEARCH -->
 ## Technical Research
 
+<!-- GETTING STARTED -->
 ## Getting Started
+The following topics will describe the requirements and how to get a local copy of the project to use in further implementations.
+
+<!-- PREREQUISITES -->
 ### Prerequisites
 - [x] GitHub code pulled to local machine
 - [x] Alexa Developer Account
 - [x] Dialogflow Account
 - [x] Firebase Account
 
+<!-- Instalation -->
 ### Installation
 #### Initial setup
 Clone the GitHub directory to your local machine, using Terminal:
@@ -104,9 +114,25 @@ firebase login
 firebase init functions
 ```
 
+<!-- USAGE -->
 ## Usage
-## Roadmap
-## Contact Us
-<a name="Contact"></a>
 
+<!-- ROADMAP -->
+## Roadmap
+
+<!-- CONTACT -->
+## Contact Us
+**Project Lead:** [Thomas Sicard](mailto:sica0019@algonquinlive.com)
+
+**Technical Lead:** [Marcos Zorzi Rosa](mailto:zorz0004@algonquinlive.com)
+
+**Design Lead:** [Brandon Vervoort](mailto:verv0022@algonquinlive.com)
+
+**Database Developer:** [Snehal Gondaliya](mailto:gond0017@algonquinlive.com)
+
+**UX Researcher & API Developer:** [Rushikumar Patel](mailto:pate0672@algonquinlive.com)
+
+**Developer:** [Justin Rignault](mailto:rign0002@algonquinlive.com)
+
+<!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
