@@ -60,6 +60,11 @@ It is focused for travelers returning or entering Canada. The main purpouse is t
 - Desirable features: Send e-mail or SMS to user with more details to the user when requested.
 - Platforms: Alexa app, Amazon Echo, Google Home
 
+## Design
+
+## High-Level Architecture
+![Genteque High-Level Architecture](images/GenTeque_HighLevelArchitecture.png)
+
 ## Requirements 
 - [x] GitHub code pulled to local machine
 - [x] Alexa Developer Account
