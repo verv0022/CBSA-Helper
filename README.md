@@ -3,10 +3,10 @@
   <a href="">
     <img src="images/Genteque_logo_final.png" alt="Team/Project logo" min-width="80" height="80">
   </a>
-  </br>
-  <b>CBSA HELPER</b>
+
   <p align="center">
     <br />
+    <h1>CBSA HELPER</h1>
     <a href="https://bot.dialogflow.com/96a34494-a331-4f68-807a-43f956ea865e" target="_blank">Chatbot Demo</a>
     ·
     <a href="#Contact">Contact Us</a>
