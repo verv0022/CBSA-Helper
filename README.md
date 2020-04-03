@@ -6,8 +6,6 @@
 
   <p align="center">
     </br>
-    <p>CBSA HELPER</p>
-    </br>
     <a href="https://bot.dialogflow.com/96a34494-a331-4f68-807a-43f956ea865e" target="_blank">Chatbot Demo</a>
     ·
     <a href="#Contact">Contact Us</a>
