@@ -78,8 +78,11 @@ The technical research started with a possibility of developing the Google Agent
 
 [Documents folder](docs/)
 
-In a change of paradigmas, we foundded out that was possible to have one code published as a serverless function, and using it as endpoint on Alexa and Dialogflow. This discover was based on the work published on the link below:
+
+During our research, we foundded out that it was possible to have one code published as a cloud function, and using it as an endpoint on Alexa and Dialogflow. This discover was based on the work published on the link below:
+
 [Google Assistant and Alexa on Firebase Functions](https://thecocktail.engineering/google-assistant-alexa-chatbot-on-firebase-cloud-functions-2d7491b0f06d)
+
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -131,8 +134,11 @@ firebase init functions
 
 <!-- USAGE -->
 ## Usage
-Usage flow example:
+Usage flow example for each platform.
 
+### Alexa
+**USER:** Hey Alexa, open CBSA Helper.
+**ALEXA:** *Welcome to CBSA Helper. How can I help you?*
 
 <!-- ROADMAP -->
 ## Roadmap
