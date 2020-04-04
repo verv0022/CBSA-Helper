@@ -137,8 +137,8 @@ firebase init functions
 Usage flow example for each platform.
 
 ### Alexa
-**USER:** Hey Alexa, open CBSA Helper.
-**ALEXA:** *Welcome to CBSA Helper. How can I help you?*
+-**USER:** Hey Alexa, open CBSA Helper.
+-**ALEXA:** *Welcome to CBSA Helper. How can I help you?*
 
 <!-- ROADMAP -->
 ## Roadmap
