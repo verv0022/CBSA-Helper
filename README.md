@@ -74,6 +74,12 @@ Alexa and Dialogflow communicate directly to Firebase Function, which contains t
 
 <!-- TECHNICAL RESEARCH -->
 ## Technical Research
+The technical research started with a possibility of developing the Google Agent on Dialogflow and importing it to Alexa, the documents in the folder link below contains the research on that matter and also the Twillo usage for SMS and Sandgrid for Emails.
+
+![Documents folder](docs/)
+
+In a change of paradigmas, we foundded out that was possible to have one code published as a serverless function, and using it as endpoint on Alexa and Dialogflow. This discover was based on the work published on the link below:
+![Google Assistant and Alexa on Firebase Functions](https://thecocktail.engineering/google-assistant-alexa-chatbot-on-firebase-cloud-functions-2d7491b0f06d)
 
 <!-- GETTING STARTED -->
 ## Getting Started
