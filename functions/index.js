@@ -75,7 +75,7 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
     }
 
     async function getAlcoholIntent(agent) {
-        let temp = alcoholIntent(agent.parameters.AlcoholType, agent.parameters.time, agent.parameters.dwm);
+        let temp = alcoholIntent(agent.parameters.AlcoholType[0], agent.parameters.time, agent.parameters.dwm);
         
         let time = agent.parameters.time;
         let dwm = agent.parameters.dwm;
