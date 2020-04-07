@@ -38,6 +38,7 @@
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
 * [Usage](#usage)
+  * [Add New Intent](#add-new-intent)
 * [Roadmap](#roadmap)
 * [Contact](#contact)
 * [Acknowledgements](#acknowledgements)
@@ -76,8 +77,8 @@ Alexa and Dialogflow communicate directly to Firebase Function, which contains t
 ## Technical Research
 The technical research started with a possibility of developing the Google Agent on Dialogflow and importing it to Alexa, the documents in the folder link below contains the research on that matter and also the Twillo usage for SMS and Sandgrid for Emails.
 
-[Documents folder](docs/)
-
+[Alexa and Firebase Research](docs/Alexa_to_Dialogflow_Research.pdf)
+[Twilio Research](docs/TwilioResearch.pdf)
 
 During our research, we foundded out that it was possible to have one code published as a cloud function, and using it as an endpoint on Alexa and Dialogflow. This discover was based on the work published on the link below:
 
@@ -137,6 +138,11 @@ firebase init functions
 Usage flow example for each platform.
 
 ![Conversation Example](images/conversation_screenshot.png)
+
+
+### Add New Intent
+To add a new intent, please refer to the following document:
+[Add Intent Document](documents/Add_New_Intent.pdf)
 
 <!-- ROADMAP -->
 ## Roadmap
