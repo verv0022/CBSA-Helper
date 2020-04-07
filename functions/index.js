@@ -389,7 +389,6 @@ const getAlexaResponse = (type, name, slots) => {
         return AlexaDefaultAnswer;
     }else if (type === '"IntentRequest"' && name === '"MoneyIntent"') {
         saveData("How much money can I cross the border with?", money(), "NEW", 13)
-        
         AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + money() + "</speak>";
         AlexaDefaultAnswer.response.card.content = money();
         return AlexaDefaultAnswer;
@@ -655,7 +654,11 @@ function money(){
 /************************************************+++++++++++++++++++++++++++++++++*/
 
 async function twilioSMS() {
-    console.log("twilio function")
+    
+    /* Get Converstion data */
+    var converstion = await getData();
+    
+     //Twilio requirements
     const accountSid = "ACad1b7c3ba37835ba7fbcfb08b565ffd8";
     const authToken = "c8774a60a7b67cdf3208ee1cc98dd31e";
     const client = require("twilio")(accountSid, authToken);
@@ -667,7 +670,7 @@ async function twilioSMS() {
         .create({
             to: mob,
             from: "+15087182932",
-            body: "Hi Rishi. Marcos testing twilio here."
+            body: conversation
         })
         .then(message => console.log(message.sid))
         .then(console.log('twilio run'))
@@ -678,6 +681,9 @@ async function twilioSMS() {
 }
 
 async function sandgridEmail() {
+
+    /* Get Converstion data */
+    var converstion = await getData();
 
     /* START  ###### SANDGRID ######*/
 
@@ -691,8 +697,8 @@ async function sandgridEmail() {
     //       to: "rprishi08@gmail.com",
     //       from: "rprishi08@gmail.com",
     //       subject: "Sending with Twilio SendGrid is Fun",
-    //       text: "SendGrid Test Successful wohoo!!",
-    //       html: "<strong>SendGrid Test Successful</strong>"
+    //       text: conversation,
+    //       html: conversation
     //     });
     //   } catch (err) {
     //     console.log("Error message: "+ err);
@@ -729,8 +735,8 @@ async function sandgridEmail() {
         from: 'genteque007@gmail.com',
         to: usr_email,
         subject: 'CBSA Helper',
-        text: 'CBSA Helper - Information',
-        html: '<b>Hello world ✔</b>'
+        text: converstion,
+        html: converstion
     };
 
     const mailTransport = (error, info) => {
