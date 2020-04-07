@@ -176,6 +176,10 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
         agent.add(help());
     }
 
+    function getMoney(agent){
+        agent.add(money());
+    }
+
     // Run the proper function handler based on the matched Dialogflow intent name
     let intentMap = new Map();
     intentMap.set('CurrentTimeIntent', getCurrentTimeAnswer);
@@ -193,6 +197,7 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
     intentMap.set('HelpIntent', getHelp);
     intentMap.set('SendSMSIntent', getSMSIntent);
     intentMap.set('EmailIntent', getEmailIntent);
+    intentMap.set('MoneyIntent', getMoney);
     agent.handleRequest(intentMap);
 });
 
@@ -365,7 +370,12 @@ const getAlexaResponse = (type, name, slots) => {
         AlexaDefaultAnswer.response.card.content = "Navigate Home.";
         AlexaDefaultAnswer.response.shouldEndSession = true;
         return AlexaDefaultAnswer;
-    } else {
+    }else if (type === '"IntentRequest"' && name === '"MoneyIntent"') {
+        AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + money() + "</speak>";
+        AlexaDefaultAnswer.response.card.content = money();
+        return AlexaDefaultAnswer;
+    }  
+    else {
         return AlexaDefaultAnswer;
     }
 
@@ -608,6 +618,14 @@ function gifts() {
 function help() {
     var speechText = "";
     speechText = "I can help you with border rules and regulations. For example, you can ask me about prohibited items or personal exemptions."
+    return speechText;
+}
+
+
+//Money
+function money(){
+    var speechText = "";
+    speechText = "If you have currency or monetary instruments equal to or greater than ten thousand canadian dollars (or the equivalent in a foreign currency) in your possession when arriving in or departing from Canada, you must report this to the CBSA.";
     return speechText;
 }
 
