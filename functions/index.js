@@ -9,13 +9,6 @@ process.env.SENDGRID_API_KEY = 'SG.vwS7L_0VTsy722zm5Jc79w.EZfHr0eztGiJmFYTMHfUVk
 //End - Sendgrid requirements
 
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
-
 /**********************************************************************************/
 /********************************Google Assistant**********************************/
 /************************************************+++++++++++++++++++++++++++++++++*/
@@ -208,30 +201,7 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
 /************************************************+++++++++++++++++++++++++++++++++*/
 exports.alexaSkill = functions.https.onRequest((request, response) => {
 
-    /* START  ###### npm alexa-validator    -- TEST --  ######*/
-    //console.log('Alexa request: '+ JSON.stringify(request.body));
-    //console.log('Alexa headers: '+ JSON.stringify(request.headers));
-    //console.log('Alexa rawBody: '+ JSON.stringify(request));
-
-    //START - Manual validation
-    // var cert_url = request.headers.signaturecertchainurl;
-    // var signature = request.headers.signature;
-    // var requestRawBody = JSON.stringify(request.rawBody);
-
-    // console.log('cert_url: '+cert_url);
-    // console.log('signature: '+signature);
-    // console.log('raw body: '+requestRawBody);
-
-    // if(cert_url === null || cert_url === '' || signature === null || signature === ''){
-    //   console.log("Request not signed");
-    //   response.status(400).send('Bad Request');
-    // } else if(!cert_url.indexOf('https://s3.amazonaws.com:443/echo.api') &&
-    //           !cert_url.indexOf('ttps://s3.amazonaws.com/echo.api')){
-    //     console.log("Invalid URL");
-    //     response.status(400).send('Bad Request');
-    // }
-    //END - Manual validation
-
+    /* START  ###### npm alexa-validator ######*/
     //START - Amazon validation - https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-nodejs
     const {
         SkillRequestSignatureVerifier,
@@ -258,7 +228,7 @@ exports.alexaSkill = functions.https.onRequest((request, response) => {
     //END - Amazon validation
 
 
-    /* END  ###### npm alexa-validator    -- TEST --  ######*/
+    /* END  ###### npm alexa-validator ######*/
 
 
     //Collect type - name and slots
@@ -499,7 +469,7 @@ function travelTimeExemptions(travel_time, dwm) {
     } else if (travel_time > 1 && travel_time < 3) {
         speechText = "You can claim goods worth up to two hundred Canadian dollars. Tobacco products and alcoholic beverages are not included in this exemption. If the value of the goods you are bringing back exceeds two hundred Canadian dollars, you cannot claim this exemption. Instead, duty and taxes are applicable on the entire amount of the imported goods. Goods must be in your possession and reported at time of entry to Canada. A minimum absence of twenty four hours from Canada is required. For example, if you left at seven PM on Friday the fifteenth, you may return no earlier than seven PM on Saturday the sixteenth to claim the exemption.";
     } else if (travel_time >= 3) {
-        speechText = "You can claim goods worth up to eight hundred Canadian dollars. You may include alcoholic beverages and tobacco products, within the prescribed limits. Refer to sections Tobacco Products and Alcoholic Beverages. Goods must be in your possession and reported at time of entry to Canada. If the value of the goods you are bringing back exceeds eight hundred Canadian dollars., duties and taxes are applicable only on amount of the imported goods that exceeds eight hundred Canadian dollars. A minimum absence of forty-eight hours from Canada is required. For example, if you left at seven PM on Friday the fifteenth, you may return no earlier than  seven PM on Sunday the seventeenth to claim the exemption.";
+        speechText = "You can claim goods worth up to eight hundred Canadian dollars. If exceeded, duties and taxes are applicable only on the amount of the imported goods that exceeds eight hundred dollars. Remember, goods must be in your possession and reported at time of entry to Canada. You can ask me about Alcoholic Beverages and Tobacco Products.";
     }
 
     return speechText;
@@ -637,7 +607,7 @@ function gifts() {
 //Help message
 function help() {
     var speechText = "";
-    speechText = "I can help you with border rules and regulations. You can ask me about prohibited items or personal exemptions, for example."
+    speechText = "I can help you with border rules and regulations. For example, you can ask me about prohibited items or personal exemptions."
     return speechText;
 }
 
