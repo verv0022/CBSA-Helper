@@ -422,8 +422,7 @@ function saveData(userQues, cbsaAns, convType,count) {
 }
 
 function getUserEmail(){
-    //return "genteque007@gmail.com";
-    return "abc@gmail.com";
+    return "genteque007@gmail.com";
 }
 
 function getData(){
