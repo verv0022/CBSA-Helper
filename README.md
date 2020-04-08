@@ -85,6 +85,8 @@ Using the data we collected from the user research we created personas to help u
 
 ### Information Architecture
 
+![InformationArchitecture](images/InformationArchitecture.png)
+
 ### Storyboards
 
 ### Usability Testing Results
@@ -92,7 +94,7 @@ Using the data we collected from the user research we created personas to help u
 
 
  
-![InformationArchitecture](images/InformationArchitecture.png)
+
 
 
 **TO BE ADDED**
