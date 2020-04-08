@@ -68,6 +68,7 @@ It is focused for travelers returning or entering Canada. The main purpouse is t
 ## Design
 ### User Research
 We conducted user research...
+
 https://docs.google.com/forms/d/e/1FAIpQLSfd8yLSAVJPkhHk4UxZg3ZdEgTfotpg5GeBORWSkCTAWzxpbQ/viewform?usp=sf_link
 
 ### Personas
@@ -75,9 +76,13 @@ Using the data we collected from the user research we created personas to help u
  
 ![Persona](images/Persona.png)
 
+### Usage Scenarios
 
+![UsageScenarios](images/Scenario.png)
 
-### User Stories & Usage Scenarios
+### User Stories 
+
+![UserStories](images/userstories.png)
 
 ### User Scripts
 
@@ -88,6 +93,8 @@ Using the data we collected from the user research we created personas to help u
 ![InformationArchitecture](images/InformationArchitecture.png)
 
 ### Storyboards
+
+![Storyboard](images/storyboard.png)
 
 ### Usability Testing Results
 
