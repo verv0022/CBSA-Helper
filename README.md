@@ -68,7 +68,10 @@ It is focused for travelers returning or entering Canada. The main purpouse is t
 <!-- DESIGN -->
 ## Design
 ### User Research
+We conducted user research...
+https://docs.google.com/forms/d/e/1FAIpQLSfd8yLSAVJPkhHk4UxZg3ZdEgTfotpg5GeBORWSkCTAWzxpbQ/viewform?usp=sf_link
 
+### Personas
 
 **TO BE ADDED**
 <!-- HIGH-LEVEL ARCHITECTURE -->
