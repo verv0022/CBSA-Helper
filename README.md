@@ -66,6 +66,7 @@ It is focused for travelers returning or entering Canada. The main purpouse is t
 
 <!-- DESIGN -->
 ## Design
+
 ### User Research
 We conducted user research...
 
@@ -84,9 +85,11 @@ Using the data we collected from the user research we created personas to help u
 
 ![UserStories](images/user_stories.png)
 
-### User Scripts
+### Dialog Scripts
 
 ### Dialog Flow
+
+![DialogFlow](images/dialog_flow.png)
 
 ### Information Architecture
 
