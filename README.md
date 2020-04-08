@@ -95,7 +95,7 @@ Using the data we collected from the user research we created personas to help u
 
 ### Information Architecture
 
-![InformationArchitecture](images/InformationArchitecture.png)
+![InformationArchitecture](images/information_architecture.png)
 
 ### Storyboards
 
