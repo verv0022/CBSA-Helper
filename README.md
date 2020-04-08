@@ -26,7 +26,7 @@
   * [Product Research](#productresearch)
   * [Personas](#personas)
   * [User Stories & Usage Scenarios](#user-stories-usage-scenarios)
-  * [Dialog Scripts]#user-scripts)
+  * [Dialog Scripts](#user-scripts)
   * [Dialog Flow](#dialog-flow)
   * [Information Architecture](#information-architecture)
   * [Storyboard](#storyboard)
@@ -79,7 +79,7 @@ Using the data we collected from the user research we created personas to help u
 
 ### Usage Scenarios
 
-![UsageScenarios](images/Scenario.png)
+![UsageScenarios](images/scenario.png)
 
 ### User Stories 
 
