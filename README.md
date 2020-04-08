@@ -72,7 +72,8 @@ We conducted user research...
 https://docs.google.com/forms/d/e/1FAIpQLSfd8yLSAVJPkhHk4UxZg3ZdEgTfotpg5GeBORWSkCTAWzxpbQ/viewform?usp=sf_link
 
 ### Personas
-Using the data we collected from the user research we created personas to help us understand our users better. Deep understanding of the target user is necessary in order to create a worthwhile product. Personas help the team find the answer to on of the most important questions "Who are we designing for?".  
+Using the data we collected from the user research we created personas to help us understand our users better. Deep understanding of the target user is necessary in order to create a worthwhile product. Personas help the team find the answer to on of the most important questions "Who are we designing for?" Here is an example of one of our many personas.
+ 
 ![Persona](images/Persona.png)
 
 **TO BE ADDED**
