@@ -25,12 +25,11 @@
   * [User Research](#userresearch)
   * [Product Research](#productresearch)
   * [Personas](#personas)
-  * [User Stories & Usage Scenarios](#user-stories-usage-Scenarios)
+  * [User Stories & Usage Scenarios](#user-stories-usage-scenarios)
+  * [Dialog Scripts]#user-scripts)
+  * [Dialog Flow](#dialog-flow)
   * [Information Architecture](#information-architecture)
-  * [Paper Prototypes](#paper-prototypes)
-  * [UI Wireframes](#ui-wireframes)
-  * [Visual Design](#visual-design)
-  * [Interactive Visual MockUp](#interactive-visual-mockup)
+  * [Storyboard](#storyboard)
   * [Usability Testing Results](#usability-testing-results)
 * [High-Level Architecture](#high-level-architecture)
 * [Technical Research](#technical-research)
@@ -76,12 +75,26 @@ Using the data we collected from the user research we created personas to help u
  
 ![Persona](images/Persona.png)
 
-### Information Aarchitecture
+
+
+### User Stories & Usage Scenarios
+
+### User Scripts
+
+### Dialog Flow
+
+### Information Architecture
+
+### Storyboards
+
+### Usability Testing Results
+
+
 
  
 ![InformationArchitecture](images/InformationArchitecture.png)
 
-### User Stories & Usage Scenarios
+
 **TO BE ADDED**
 <!-- HIGH-LEVEL ARCHITECTURE -->
 ## High-Level Architecture
