@@ -82,7 +82,7 @@ Using the data we collected from the user research we created personas to help u
 
 ### User Stories 
 
-![UserStories](images/userstories.png)
+![UserStories](images/user_stories.png)
 
 ### User Scripts
 
