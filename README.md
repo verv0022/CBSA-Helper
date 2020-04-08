@@ -76,6 +76,12 @@ Using the data we collected from the user research we created personas to help u
  
 ![Persona](images/Persona.png)
 
+### Information Aarchitecture
+
+ 
+![InformationArchitecture](images/InformationArchitecture.png)
+
+### User Stories & Usage Scenarios
 **TO BE ADDED**
 <!-- HIGH-LEVEL ARCHITECTURE -->
 ## High-Level Architecture
