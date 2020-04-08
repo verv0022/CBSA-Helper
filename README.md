@@ -87,6 +87,8 @@ Using the data we collected from the user research we created personas to help u
 
 ### Dialog Scripts
 
+![DialogScripts](images/dialog_scripts.png)
+
 ### Dialog Flow
 
 ![DialogFlow](images/dialog_flow.png)
