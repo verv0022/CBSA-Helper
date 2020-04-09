@@ -301,8 +301,8 @@ const getAlexaResponse = (type, name, slots) => {
         return AlexaDefaultAnswer;
     } else if (type === '"IntentRequest"' && name === '"ExemptionsIntent"') {
         if (slots.time.value === '"?"') {
-            AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> I don't know if I understand. Could you repeat your question?</speak>";
-            AlexaDefaultAnswer.response.card.content = "I don't know if I understand. Could you repeat your question?";
+            AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak> I didn't get that. Could you repeat your question?</speak>";
+            AlexaDefaultAnswer.response.card.content = "I didn't get that. Could you repeat your question?";
         } else {
             let user = "What are my travel exemptions on a "+slots.time.value+ " "+ slots.dwm.value+" trip?";
             let cbsa = travelTimeExemptions(Number(slots.time.value), slots.dwm.value);
@@ -441,7 +441,7 @@ function getData(){
 }
 
 /**********************************************************************************/
-/***********************************ANSWERS****************************************/
+/***********************************RESPONSES**************************************/
 /************************************************+++++++++++++++++++++++++++++++++*/
 
 //Welcome message
@@ -484,7 +484,7 @@ function travelTimeExemptions(travel_time, dwm) {
 
     //Validate slots received and return error message
     if (travel_time === '?' || dwm === '?' || isNaN(travel_time) || dwm === '') {
-        speechText = "I'm not sure if I understand, please ask me again.";
+        speechText = "I didn't get that, please ask me again.";
         return speechText;
     }
 
@@ -496,7 +496,7 @@ function travelTimeExemptions(travel_time, dwm) {
     if (travel_time <= 1) {
         speechText = "Personal exemptions do not apply to same-day cross-border shoppers.";
     } else if (travel_time > 1 && travel_time < 3) {
-        speechText = "You can claim goods worth up to two hundred Canadian dollars. Tobacco products and alcoholic beverages are not included in this exemption. If the value of the goods you are bringing back exceeds two hundred Canadian dollars, you cannot claim this exemption. Instead, duty and taxes are applicable on the entire amount of the imported goods. Goods must be in your possession and reported at time of entry to Canada. A minimum absence of twenty four hours from Canada is required. For example, if you left at seven PM on Friday the fifteenth, you may return no earlier than seven PM on Saturday the sixteenth to claim the exemption.";
+        speechText = "You can claim goods worth up to two hundred Canadian dollars. If exceeded, duty and taxes are applicable on the entire amount of the imported goods. Tobacco products and alcoholic beverages are not included in this exemption. Always remember, that goods must be in your possession and reported at time of entry to Canada. In order to claim an exemption, a minimum absence of twenty four hours from Canada is required.";
     } else if (travel_time >= 3) {
         speechText = "You can claim goods worth up to eight hundred Canadian dollars. If exceeded, duties and taxes are applicable only on the amount of the imported goods that exceeds eight hundred dollars. Remember, goods must be in your possession and reported at time of entry to Canada. You can ask me about Alcoholic Beverages and Tobacco Products.";
     }
@@ -510,7 +510,7 @@ function alcoholIntent(alcohol_type, travel_time, dwm) {
 
     //Validate slots received and return error message
     if (alcohol_type === '?' || dwm === '?' || alcohol_type === '' || dwm === '') {
-        speechText = "I'm not sure if I understand, please ask me again.";
+        speechText = "I didn't get that, please ask me again.";
         return speechText;
     }
 
@@ -544,15 +544,17 @@ function tobaccoIntent(tobacco_type) {
 
     //Validate slots received and return error message
     if (tobacco_type === '?' || tobacco_type === '') {
-        speechText = "I'm not sure if I understand, please ask me again.";
+        speechText = "I didn't get that, please ask me again.";
         return speechText;
     }
 
     //convert plural words to singular
     if (tobacco_type === 'cigars') {
         tobacco_type = 'cigar'
-    } else if (tobacco_type === 'cigarretes') {
-        tobacco_type = 'cigarrete';
+    } else if (tobacco_type === 'cigarettes') {
+        tobacco_type = 'cigarette';
+    } else if (tobacco_type === 'cartons') {
+        tobacco_type = 'carton'
     }
 
     //Tobacco responses
@@ -568,6 +570,9 @@ function tobaccoIntent(tobacco_type) {
             break;
         case 'cigarette':
             speechText = "If you have been away from Canada for forty-eight hours or more, you can bring up to two hundred cigarettes";
+            break;
+        case 'carton':
+            speetchText = "If you have been away from Canada for forty-eight hours or more, you can bring up to two cartons.";
             break;
         default:
             speechText = "For more information regarding tobacco products entering Canada, please refer to CBSA website.";
