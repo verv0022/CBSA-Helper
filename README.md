@@ -30,7 +30,7 @@
   * [Dialog Scripts](#user-scripts)
   * [Dialog Flow](#dialog-flow)
   * [Information Architecture](#information-architecture)
-  * [Storyboard](#storyboard)
+  * [Storyboards](#storyboards)
   * [Usability Testing Results](#usability-testing-results)
 * [High-Level Architecture](#high-level-architecture)
 * [Technical Research](#technical-research)
