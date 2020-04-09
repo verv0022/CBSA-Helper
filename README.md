@@ -70,6 +70,7 @@ It is focused for travelers returning or entering Canada. The main purpouse is t
 
 ### User Research
 We conducted user research by sending out a survey to Canadian citizens, we found out things like how proficient people were with using voice assistants and we gathered data on how they would ask the voice assistant questions by putting them into a scenario. Here is an example of our survey:
+
 https://docs.google.com/forms/d/e/1FAIpQLSfd8yLSAVJPkhHk4UxZg3ZdEgTfotpg5GeBORWSkCTAWzxpbQ/viewform?usp=sf_link
 
 ### Product Research
@@ -94,11 +95,12 @@ We created user scenarios for our personas to help us understand what motivates 
 
 
 ### Dialog Scripts
+Once we had outlined some key features, we created dialog scripts. Dialog scripts help us to see how users will interact with the voice assistant in real life. A user may say too little, too much, or say things that we weren’t expecting. Writing dialog scripts helps us visualize the conversation.
 
 ![DialogScripts](images/dialog_scripts.png)
 
 ### Dialog Flow
-
+ is a way to visualize any number of pathways that a customer might interact with in your experience.
 ![DialogFlow](images/dialog_flow.png)
 
 ### Information Architecture
