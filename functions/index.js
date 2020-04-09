@@ -641,7 +641,7 @@ function gifts() {
 //Help message
 function help() {
     var speechText = "";
-    speechText = "I can help you with border rules and regulations. For example, you can ask me about prohibited items or personal exemptions."
+    speechText = "I can help you with border rules and regulations. For example, you can ask me the following: What are my personal exemptions? How much alcohol can I bring back? How many cigarettes can I bring into Canada? What are the prohibited items?"
     return speechText;
 }
 
