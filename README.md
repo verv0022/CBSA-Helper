@@ -30,7 +30,6 @@
   * [Dialog Flow](#dialog-flow)
   * [Information Architecture](#information-architecture)
   * [Storyboards](#storyboards)
-  * [Usability Testing Results](#usability-testing-results)
 * [High-Level Architecture](#high-level-architecture)
 * [Technical Research](#technical-research)
 * [Getting Started](#getting-started)
@@ -103,10 +102,6 @@ Used more for convention mobile applications we thought it would be a good idea 
 We wanted a way to visually predict the users experience with the voice assistant. We created a storyboard to help people understand the flow of conversation through the interaction. Using a storyboard was the proved to be a good approach to show off the narrative.
 
 ![Storyboard](images/storyboard.png)
-
-### Usability Testing Results
-
-**TO BE ADDED**
 
 <!-- HIGH-LEVEL ARCHITECTURE -->
 ## High-Level Architecture
