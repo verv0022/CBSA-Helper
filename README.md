@@ -25,8 +25,8 @@
   * [User Research](#user-research)
   * [Product Research](#product-research)
   * [Personas](#personas)
-  * [Usage Scenarios](#usage-scenarios)
   * [User Stories](#user-stories)
+  * [Usage Scenarios](#usage-scenarios)
   * [Dialog Scripts](#user-scripts)
   * [Dialog Flow](#dialog-flow)
   * [Information Architecture](#information-architecture)
@@ -69,7 +69,7 @@ It is focused for travelers returning or entering Canada. The main purpouse is t
 ## Design
 
 ### User Research
-We conducted user research by sending out a survey to Canadian citizens, we found out things like how profiecnt people were with using voice assistants and we gathered data on how they would ask the voice assistant questions by putting them into a scenario. Here is an example of our survey:
+We conducted user research by sending out a survey to Canadian citizens, we found out things like how proficient people were with using voice assistants and we gathered data on how they would ask the voice assistant questions by putting them into a scenario. Here is an example of our survey:
 https://docs.google.com/forms/d/e/1FAIpQLSfd8yLSAVJPkhHk4UxZg3ZdEgTfotpg5GeBORWSkCTAWzxpbQ/viewform?usp=sf_link
 
 ### Product Research
@@ -77,16 +77,21 @@ https://docs.google.com/forms/d/e/1FAIpQLSfd8yLSAVJPkhHk4UxZg3ZdEgTfotpg5GeBORWS
 
 
 ### Personas
-Using the data we collected from the user research we created personas to help us understand our users better. Deep understanding of the target user is necessary in order to create a worthwhile product. Personas help the team find the answer to on of the most important questions "Who are we designing for?" Here is an example of one of our many personas.
+Using the data, we collected from the user research we created personas to help us understand our users better. Deep understanding of the target user is necessary in order to create a worthwhile product. Personas help the team find the answer to one of the most important questions "Who are we designing for?" Here is an example of one of our many personas.
+
 ![Persona](images/persona.png)
 
+
+### User Stories 
+User stories are brief statements that identifies the users and their goals. It determines who the user is, what they need, and why they need it. Creating user stories give us an estimate on what is needed to be delivered in the product.
+
+![UserStories](images/user_stories.png)
+
 ### Usage Scenarios
+We created user scenarios for our personas to help us understand what motivates the user when they interact with the voice assistant. We wanted to capture how a user performs a task with the voice assistant in different circumstances. This gives us a sense of the flow of tasks a user must take in order to successfully use the voice assistant.
 
 ![UsageScenarios](images/scenario.png)
 
-### User Stories 
-
-![UserStories](images/user_stories.png)
 
 ### Dialog Scripts
 
@@ -102,6 +107,7 @@ Using the data we collected from the user research we created personas to help u
 
 ### Storyboards
 We wanted a way to visually predict the users experience with the voice assistant. We created a storyboard to help people understand the flow of conversation through the interaction. Using a storyboard was the proved to be a good approach to show off the narrative.
+
 ![Storyboard](images/storyboard.png)
 
 ### Usability Testing Results
