@@ -498,7 +498,7 @@ function travelTimeExemptions(travel_time, dwm) {
     } else if (travel_time > 1 && travel_time < 3) {
         speechText = "You can claim goods worth up to two hundred Canadian dollars. If exceeded, duty and taxes are applicable on the entire amount of the imported goods. Tobacco products and alcoholic beverages are not included in this exemption. Always remember, that goods must be in your possession and reported at time of entry to Canada. In order to claim an exemption, a minimum absence of twenty four hours from Canada is required.";
     } else if (travel_time >= 3) {
-        speechText = "You can claim goods worth up to eight hundred Canadian dollars. If exceeded, duties and taxes are applicable only on the amount of the imported goods that exceeds eight hundred dollars. Remember, goods must be in your possession and reported at time of entry to Canada. You can ask me about Alcoholic Beverages and Tobacco Products.";
+        speechText = "You can claim goods worth up to eight hundred Canadian dollars. If exceeded, duties and taxes are applicable only on the amount of the imported goods that exceeds eight hundred dollars. Always remember, goods must be in your possession and reported at time of entry to Canada. You can ask me about Alcoholic Beverages and Tobacco Products.";
     }
 
     return speechText;
