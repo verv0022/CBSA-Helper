@@ -56,8 +56,8 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
         let convType = request.body.originalDetectIntentRequest.payload.conversation;
         let time = request.body.queryResult.parameters.time;
         let dwm = request.body.queryResult.parameters.dwm;
-        let user = "what are my travel exemptions?";
-        let cbsa = `Exemptions for ${time} ${dwm} trip are : ${temp}`;
+        let user = `what are my travel exemptions on ${time} ${dwm} trip?`;
+        let cbsa = `${temp}`;
         
         saveData(user,cbsa,convType.type,2)
         
@@ -181,7 +181,7 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
         let user = request.body.queryResult.queryText;
         let convType = request.body.originalDetectIntentRequest.payload.conversation;
         
-        saveData(user ,cbsa, convType.type,7);
+        saveData(user ,cbsa, convType.type,12);
 
         await agent.add(cbsa);
     }
@@ -210,14 +210,16 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
 /**********************************************************************************/
 /********************************Alexa Skill***************************************/
 /************************************************+++++++++++++++++++++++++++++++++*/
+
 exports.alexaSkill = functions.https.onRequest((request, response) => {
 
     /* START  ###### npm alexa-validator ######*/
-    //START - Amazon validation - https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-nodejs
+    // START - Amazon validation - https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-nodejs
     const {
         SkillRequestSignatureVerifier,
         TimestampVerifier
     } = require('ask-sdk-express-adapter');
+    
     const Alexa = require('ask-sdk-core');
 
     const skillBuilder = Alexa.SkillBuilders.custom();
@@ -229,7 +231,7 @@ exports.alexaSkill = functions.https.onRequest((request, response) => {
             await new TimestampVerifier().verify(requestStr);
         } catch (err) {
             // server return err message
-            response.status(400).send('Bad Request');
+            //response.status(400).send('Bad Request');
             console.log("Validator error: " + err);
         }
         //response = skill.invoke(request.body);
@@ -255,7 +257,6 @@ exports.alexaSkill = functions.https.onRequest((request, response) => {
     //console.log("Test - type: " + type);
 
     const result = getAlexaResponse(type, name, slots);
-
 
     try {
         validator(JSON.stringify(request.body), response); //call Amazon validator, after consume request
@@ -305,7 +306,7 @@ const getAlexaResponse = (type, name, slots) => {
         } else {
             let user = "What are my travel exemptions on a "+slots.time.value+ " "+ slots.dwm.value+" trip?";
             let cbsa = travelTimeExemptions(Number(slots.time.value), slots.dwm.value);
-            saveData(user, cbsa, "NEW", 2 )
+            saveData(user, cbsa, "ACTIVE", 2 )
             AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + travelTimeExemptions(Number(slots.time.value), slots.dwm.value) + "</speak>";
             AlexaDefaultAnswer.response.card.content = travelTimeExemptions(Number(slots.time.value), slots.dwm.value);
         }
@@ -321,52 +322,52 @@ const getAlexaResponse = (type, name, slots) => {
     } else if (type === '"IntentRequest"' && name === '"AlcoholIntent"') {
         let user = "How many "+slots.AlcoholType.value +"can I bring from a "+ slots.time.value + " " + slots.dwm.value + "trip?";
         let cbsa = alcoholIntent(slots.AlcoholType.value, Number(slots.time.value), slots.dwm.value);
-        saveData(user, cbsa, "NEW", 3)
+        saveData(user, cbsa, "ACTIVE", 3)
         AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + alcoholIntent(slots.AlcoholType.value, Number(slots.time.value), slots.dwm.value) + "</speak>";
         AlexaDefaultAnswer.response.card.content = alcoholIntent(slots.AlcoholType.value, Number(slots.time.value), slots.dwm.value);
         return AlexaDefaultAnswer;
     } else if (type === '"IntentRequest"' && name === '"TobaccoIntent"') {
-        saveData("How many " +slots.TobaccoType.value+" can I bring back to Canada?" , tobaccoIntent(slots.TobaccoType.value), "NEW" ,4);
+        saveData("How many " +slots.TobaccoType.value+" can I bring back to Canada?" , tobaccoIntent(slots.TobaccoType.value), "ACTIVE" ,4);
         AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + tobaccoIntent(slots.TobaccoType.value) + "</speak>";
         AlexaDefaultAnswer.response.card.content = tobaccoIntent(slots.TobaccoType.value);
         return AlexaDefaultAnswer;
     } else if (type === '"IntentRequest"' && name === '"ProhibitedIntent"') {
-        saveData("What are the prohibited items?" , prohibitedItems(), "NEW" ,5);
+        saveData("What are the prohibited items?" , prohibitedItems(), "ACTIVE" ,5);
         AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + prohibitedItems() + "</speak>";
         AlexaDefaultAnswer.response.card.content = prohibitedItems();
         return AlexaDefaultAnswer;
     } else if (type === '"IntentRequest"' && name === '"FirearmsWeaponsIntent"') {
-        saveData("Firearms and weapons allowances?" , firearmsWeapons(), "NEW" ,6);
+        saveData("Firearms and weapons allowances?" , firearmsWeapons(), "ACTIVE" ,6);
         AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + firearmsWeapons() + "</speak>";
         AlexaDefaultAnswer.response.card.content = firearmsWeapons();
         return AlexaDefaultAnswer;
     } else if (type === '"IntentRequest"' && name === '"FoodPlantsAnimalsIntent"') {
-        saveData("Food, Plants and Animals allowances?" , foodPlantsAnimals(), "NEW" ,7);
+        saveData("Food, Plants and Animals allowances?" , foodPlantsAnimals(), "ACTIVE" ,7);
         AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + foodPlantsAnimals() + "</speak>";
         AlexaDefaultAnswer.response.card.content = foodPlantsAnimals();
         return AlexaDefaultAnswer;
     } else if (type === '"IntentRequest"' && name === '"ExplosivesFireworksAmmunitionIntent"') {
-        saveData("Explosives, Fireworks and Ammunition allowances?" , explosivesFireworksAmmunition(), "NEW" ,8);
+        saveData("Explosives, Fireworks and Ammunition allowances?" , explosivesFireworksAmmunition(), "ACTIVE" ,8);
         AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + explosivesFireworksAmmunition() + "</speak>";
         AlexaDefaultAnswer.response.card.content = explosivesFireworksAmmunition();
         return AlexaDefaultAnswer;
     } else if (type === '"IntentRequest"' && name === '"VehiclesIntent"') {
-        saveData("Vehicles allowances?" , vehicles(), "NEW" ,9);
+        saveData("Vehicles allowances?" , vehicles(), "ACTIVE" ,9);
         AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + vehicles() + "</speak>";
         AlexaDefaultAnswer.response.card.content = vehicles();
         return AlexaDefaultAnswer;
     } else if (type === '"IntentRequest"' && name === '"ConsumerProductsIntent"') {
-        saveData("Consumer Products alowances." , consumerProducts(), "NEW" ,10);
+        saveData("Consumer Products alowances." , consumerProducts(), "ACTIVE" ,10);
         AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + consumerProducts() + "</speak>";
         AlexaDefaultAnswer.response.card.content = consumerProducts();
         return AlexaDefaultAnswer;
     } else if (type === '"IntentRequest"' && name === '"GiftsIntent"') {
-        saveData("Gifts alowances." , gifts(), "NEW" ,11);
+        saveData("Gifts alowances." , gifts(), "ACTIVE" ,11);
         AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + gifts() + "</speak>";
         AlexaDefaultAnswer.response.card.content = gifts();
         return AlexaDefaultAnswer;
     } else if (type === '"IntentRequest"' && name === '"AMAZON.HelpIntent"') {
-        saveData("Help." , help(), "NEW" ,12);
+        //saveData("Help." , help(), "ACTIVE" ,12);
         AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + help() + "</speak>";
         AlexaDefaultAnswer.response.card.content = help();
         return AlexaDefaultAnswer;
@@ -388,7 +389,7 @@ const getAlexaResponse = (type, name, slots) => {
         AlexaDefaultAnswer.response.shouldEndSession = true;
         return AlexaDefaultAnswer;
     }else if (type === '"IntentRequest"' && name === '"MoneyIntent"') {
-        saveData("How much money can I cross the border with?", money(), "NEW", 13)
+        saveData("How much money can I cross the border with?", money(), "NEW", 13);
         AlexaDefaultAnswer.response.outputSpeech.ssml = "<speak>" + money() + "</speak>";
         AlexaDefaultAnswer.response.card.content = money();
         return AlexaDefaultAnswer;
