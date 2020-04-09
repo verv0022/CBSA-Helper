@@ -27,7 +27,7 @@
   * [Personas](#personas)
   * [User Stories](#user-stories)
   * [Usage Scenarios](#usage-scenarios)
-  * [Dialog Scripts](#user-scripts)
+  * [Dialog Scripts](#dialog-scripts)
   * [Dialog Flow](#dialog-flow)
   * [Information Architecture](#information-architecture)
   * [Storyboards](#storyboards)
