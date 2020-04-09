@@ -100,7 +100,7 @@ Once we had outlined some key features, we created dialog scripts. Dialog script
 ![DialogScripts](images/dialog_scripts.png)
 
 ### Dialog Flow
- is a way to visualize any number of pathways that a customer might interact with in your experience.
+After creating the scripts, we wanted to explore the way the conversations with our voice assistant would go a bit more. We created a dialog flow chart of different conversation paths a user can take. Similar to an information architecture this maps out the experience a user has with application.
 ![DialogFlow](images/dialog_flow.png)
 
 ### Information Architecture
