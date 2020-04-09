@@ -70,7 +70,6 @@ It is focused for travelers returning or entering Canada. The main purpouse is t
 
 ### User Research
 We conducted user research by sending out a survey to Canadian citizens, we found out things like how proficient people were with using voice assistants and we gathered data on how they would ask the voice assistant questions by putting them into a scenario. Here is an example of our survey:
-
 https://docs.google.com/forms/d/e/1FAIpQLSfd8yLSAVJPkhHk4UxZg3ZdEgTfotpg5GeBORWSkCTAWzxpbQ/viewform?usp=sf_link
 
 ### Product Research
@@ -82,7 +81,6 @@ Using the data, we collected from the user research we created personas to help 
 
 ![Persona](images/persona.png)
 
-
 ### User Stories 
 User stories are brief statements that identifies the users and their goals. It determines who the user is, what they need, and why they need it. Creating user stories give us an estimate on what is needed to be delivered in the product.
 
@@ -93,18 +91,17 @@ We created user scenarios for our personas to help us understand what motivates 
 
 ![UsageScenarios](images/scenario.png)
 
-
 ### Dialog Scripts
 Once we had outlined some key features, we created dialog scripts. Dialog scripts help us to see how users will interact with the voice assistant in real life. A user may say too little, too much, or say things that we weren’t expecting. Writing dialog scripts helps us visualize the conversation.
 
 ![DialogScripts](images/dialog_scripts.png)
 
 ### Dialog Flow
-After creating the scripts, we wanted to explore the way the conversations with our voice assistant would go a bit more. We created a dialog flow chart of different conversation paths a user can take. Similar to an information architecture this maps out the experience a user has with application.
+After creating the scripts, we wanted to explore the way the conversations with our voice assistant would go a bit more. We created a dialog flow chart of different conversation paths a user can take. Similar to an information architecture this maps out the experience a user has with the application.
 ![DialogFlow](images/dialog_flow.png)
 
 ### Information Architecture
-
+Used more for convention mobile applications we thought it would be a good idea to also include a more standard information architecture of the dialog flow. This helps our developers visualize the map of conversation flow and the experience a user has with the voice assistant.
 ![InformationArchitecture](images/information_architecture.png)
 
 ### Storyboards
@@ -114,13 +111,8 @@ We wanted a way to visually predict the users experience with the voice assistan
 
 ### Usability Testing Results
 
-
-
- 
-
-
-
 **TO BE ADDED**
+
 <!-- HIGH-LEVEL ARCHITECTURE -->
 ## High-Level Architecture
 Alexa and Dialogflow communicate directly to Firebase Function, which contains the code published and the following interactions with Firebase Database, Twilio and Sandgrid occurr from there. Additionaly, Google has a chat platform, directly enabled from DialogFlow:
