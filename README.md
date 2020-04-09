@@ -74,7 +74,7 @@ https://docs.google.com/forms/d/e/1FAIpQLSfd8yLSAVJPkhHk4UxZg3ZdEgTfotpg5GeBORWS
 
 ### Product Research
 
-
+Since there was no direct competitor to our voice assistance our product research included studying any other Alexa and Google Home skills and seeing how 
 
 ### Personas
 Using the data, we collected from the user research we created personas to help us understand our users better. Deep understanding of the target user is necessary in order to create a worthwhile product. Personas help the team find the answer to one of the most important questions "Who are we designing for?" Here is an example of one of our many personas.
