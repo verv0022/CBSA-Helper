@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "cbsa-917c0"
+    "default": "cbsa-917c0",
+    "cbsa.genteque": "cbsahelper-vpkdiy",
+    "genteque": "cbsa-917c0"
   }
 }

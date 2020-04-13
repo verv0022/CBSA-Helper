@@ -1,11 +1,10 @@
 /* eslint-disable no-unreachable */
 const functions = require('firebase-functions');
-//const verifier = require('alexa-verifier');
 
 
 //Start - Sendgrid requirements
 process.env.DEBUG = 'dialogflow:debug';
-process.env.SENDGRID_API_KEY = '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';
+process.env.SENDGRID_API_KEY = 'YOUR SENDGRID KEY GOES HERE';
 //End - Sendgrid requirements
 
 
@@ -26,8 +25,6 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
         request,
         response
     });
-    //console.log('Dialogflow Request headers: ' + JSON.stringify(request.headers));
-    //console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
 
     //Functions to add agent for each intent called
     function getCurrentTimeAnswer(agent) {
@@ -213,7 +210,6 @@ exports.dialogflowFirebaseFulfillement = functions.https.onRequest((request, res
 
 exports.alexaSkill = functions.https.onRequest((request, response) => {
 
-    /* START  ###### npm alexa-validator ######*/
     // START - Amazon validation - https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-nodejs
     const {
         SkillRequestSignatureVerifier,
@@ -230,18 +226,11 @@ exports.alexaSkill = functions.https.onRequest((request, response) => {
             await new SkillRequestSignatureVerifier().verify(requestStr, request.headers);
             await new TimestampVerifier().verify(requestStr);
         } catch (err) {
-            // server return err message
-            //response.status(400).send('Bad Request');
             console.log("Validator error: " + err);
         }
-        //response = skill.invoke(request.body);
-        //response = skill.invoke(JSON.parse(request.body));
-        //response.send(result)
+
     }
     //END - Amazon validation
-
-
-    /* END  ###### npm alexa-validator ######*/
 
 
     //Collect type - name and slots
@@ -421,6 +410,14 @@ function saveData(userQues, cbsaAns, convType,count) {
 }
 
 function getUserEmail(){
+    /****************** Amazon Alexa ******************/
+    //After deployment you can follow this link to get user's email : https://medium.com/@nils.backe/how-to-use-the-customer-profile-api-in-amazon-alexa-skills-671773c672f6
+
+
+    /****************** Google Assistent ******************/
+    //After deployment you can follow this link to get user's email : https://stackoverflow.com/questions/48535300/how-to-get-users-unique-identity-from-google-homes-voice-match-profile
+    //https://developers.google.com/assistant/identity/google-sign-in
+
     return "genteque007@gmail.com";
 }
 
@@ -665,17 +662,17 @@ async function twilioSMS() {
     var converstion = await getData();
     
      //Twilio requirements
-    const accountSid = "ACad1b7c3ba37835ba7fbcfb08b565ffd8";
-    const authToken = "c8774a60a7b67cdf3208ee1cc98dd31e";
+    const accountSid = "Your account Sid goes here";
+    const authToken = "Your Twilio token goes here";
     const client = require("twilio")(accountSid, authToken);
 
     //Phone number that will receive the message
-    var mob = "+18195761628";
+    var mob = "User phone number goes here";
 
     await client.messages
         .create({
             to: mob,
-            from: "+15087182932",
+            from: "Twilio phone goes here",
             body: conversation
         })
         .then(message => console.log(message.sid))
@@ -694,15 +691,13 @@ async function sandgridEmail() {
     /* START  ###### SANDGRID ######*/
 
     //   const sgMail = require("@sendgrid/mail");
-
     //   await sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
     //   try {
     //     console.log("email function");
     //     await sgMail.send({
-    //       to: "rprishi08@gmail.com",
-    //       from: "rprishi08@gmail.com",
-    //       subject: "Sending with Twilio SendGrid is Fun",
+    //       to: "User e-mail goes here",
+    //       from: "Sendgrid e-mail goes here",
+    //       subject: "CBSA Helper",
     //       text: conversation,
     //       html: conversation
     //     });
@@ -715,7 +710,7 @@ async function sandgridEmail() {
     /* END ###### SANDGRID ######*/
 
 
-    /* START ###### GMAIL SMTP ######*/
+    /* START ###### GMAIL SMTP for Testing ######*/
     //Gmail SMTP: https://stackoverflow.com/questions/19877246/nodemailer-with-gmail-and-nodejs
 
     var nodemailer = require('nodemailer');
@@ -729,9 +724,9 @@ async function sandgridEmail() {
         auth: {
             type: 'OAuth2',
             secure: true,
-            accessToken: 'AIzaSyCTgfucMSI92eZLKiNkrwpP8N4AuZ-VZ1c',
+            accessToken: 'Gmail',
             user: 'genteque007@gmail.com',
-            pass: 'Appliedproject007'
+            pass: 'Password goes here'
         }
     }));
 
@@ -758,7 +753,7 @@ async function sandgridEmail() {
 
     transporter.sendMail(mailOptions, mailTransport);
 
-    /* END ###### GMAIL SMTP ######*/
+    /* END ###### GMAIL SMTP for testing ######*/
 
     return 'email sent';
 }
