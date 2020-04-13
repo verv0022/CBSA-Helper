@@ -112,8 +112,9 @@ Alexa and Dialogflow communicate directly to Firebase Function, which contains t
 ## Technical Research
 The technical research started with a possibility of developing the Google Agent on Dialogflow and importing it to Alexa, the documents in the folder link below contains the research on that matter and also the Twillo usage for SMS and Sandgrid for Emails.
 
-[Alexa and Firebase Research](docs/Alexa_to_Dialogflow_Research.pdf)
-[Twilio Research](docs/TwilioResearch.pdf)
+-[Alexa and Firebase Research](docs/Alexa_to_Dialogflow_Research.pdf)
+
+-[Twilio Research](docs/TwilioResearch.pdf)
 
 During our research, we foundded out that it was possible to have one code published as a cloud function, and using it as an endpoint on Alexa and Dialogflow. This discover was based on the work published on the link below:
 
@@ -159,6 +160,14 @@ Every time a change in the code is made, or a functionality is implemented you w
 sudo firebase deploy
 ```
 
+### Setup aditional features
+To setup and enable the additional features to send email and SMS please refer to the following documents:
+
+-[Sendgrid Setup](docs/SendGrid-Guide.pdf)
+
+-[Twilio Setup](docs/Twilio-SetUp.pdf)
+
+
 #### Emergency Kit
 If for any reason you need to reinstall the firebase functions, proceed on Terminal as follows:
 ```sh
@@ -181,11 +190,11 @@ To add a new intent, please refer to the following document:
 
 <!-- ROADMAP -->
 ## Roadmap
-- Add more intents: We have added the intents that currently are refered on CBSA website, as regulations can change, any new intent will need to be added later.
+- Add more intents: We have added the intents that currently are referred to on CBSA website, as regulations can change, any new intent will need to be added later.
 
 - Publishing on Store: This project is not published on Alexa Store nor Google Store. We worked as far as we could to let the project in the final steps for publishing for the general public.
 
-- Images: The project was focused only on voice, but Amazon and Google have devices with screen, we would suggest to implement some images in the resposes for the users that have this devices, we believe this will make their usage more friendly, instead of the device be only displaying text as currently does.
+- Images: The project was focused only on voice, but Amazon and Google have devices with a screen, we would suggest implementing some images in the responses for the users that have these devices, we believe this will make their usage more friendly, instead of the device be only displaying text as currently does.
 
 <!-- CONTACT -->
 ## Contact Us
@@ -203,3 +212,8 @@ To add a new intent, please refer to the following document:
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
+Our gratitude to our professors that contributed since the early stages of this project. Adesh and Su Cheng, thank you.
+
+To our client, who was always open to discuss the different approaches we were thinking on and for embracing this challenge. Ranjan, thank you.
+
+To all the members of Genteque that contributed with their best in this project, thank you.
